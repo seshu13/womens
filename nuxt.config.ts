@@ -1,6 +1,5 @@
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
-  ssr: true,
   modules: ['@nuxtjs/tailwindcss', '@nuxt/image'],
 
   app: {
@@ -23,34 +22,12 @@ export default defineNuxtConfig({
     domains: ['images.unsplash.com', 'cdn.prod.website-files.com']
   },
 
-  // Deployment configuration
+  // Build configuration
   nitro: {
-    preset: 'netlify',
-    output: {
-      publicDir: '.output/public'
-    }
+    preset: 'netlify'
   },
 
-  // Build configuration
   build: {
     transpile: ['@headlessui/vue']
-  },
-
-  // TypeScript configuration
-  typescript: {
-    strict: true,
-    typeCheck: true
-  },
-
-  // Development configuration
-  experimental: {
-    payloadExtraction: false
-  },
-
-  // Runtime configuration
-  runtimeConfig: {
-    public: {
-      siteUrl: process.env.SITE_URL || 'https://trebound.netlify.app'
-    }
   }
 })

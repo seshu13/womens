@@ -1,5 +1,5 @@
 [build]
-  command = "npm run clean && npm ci && npm run generate"
+  command = "npx rimraf .output && npm ci && npm run generate"
   publish = ".output/public"
 
 [build.environment]
@@ -7,6 +7,7 @@
   NPM_CONFIG_LEGACY_PEER_DEPS = "true"
   NITRO_PRESET = "netlify"
   NODE_OPTIONS = "--max-old-space-size=4096"
+  NPM_FLAGS = "--no-optional"
 
 [[redirects]]
   from = "/*"

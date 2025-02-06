@@ -7,13 +7,14 @@
     "generate": "nuxt generate",
     "preview": "nuxt preview",
     "postinstall": "nuxt prepare",
-    "clean": "rm -rf node_modules .nuxt .output"
+    "clean": "rimraf node_modules .nuxt .output dist"
   },
   "devDependencies": {
     "@nuxt/image": "1.0.0",
     "@nuxtjs/tailwindcss": "6.11.4",
     "@types/node": "20.11.16",
     "nuxt": "3.10.1",
+    "rimraf": "5.0.5",
     "typescript": "5.3.3"
   },
   "dependencies": {
