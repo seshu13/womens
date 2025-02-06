@@ -12,7 +12,23 @@ export interface Proposal {
 }
 
 export const useProposal = () => {
-  // Only create refs if we're on the client side
+  if (process.server) {
+    // Return empty state for SSR
+    return {
+      selectedActivities: ref<string[]>([]),
+      showProposalModal: ref(false),
+      isSubmitting: ref(false),
+      submitSuccess: ref(false),
+      hasSelectedActivities: computed(() => false),
+      selectedCount: computed(() => 0),
+      toggleActivity: () => {},
+      openProposalModal: () => {},
+      closeProposalModal: () => {},
+      submitProposal: async () => {}
+    }
+  }
+
+  // Client-side code
   const selectedActivities = ref<string[]>([])
   const showProposalModal = ref(false)
   const isSubmitting = ref(false)
