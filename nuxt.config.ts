@@ -22,14 +22,12 @@ export default defineNuxtConfig({
 
   // Add nitro configuration
   nitro: {
-    esbuild: {
-      options: {
-        target: 'esnext'
-      }
-    },
-    preset: 'node-server',
-    routeRules: {
-      '/**': { cors: true }
+    preset: 'netlify',
+    prerender: {
+      crawlLinks: true,
+      routes: [
+        '/'
+      ]
     }
   },
 
