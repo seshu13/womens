@@ -2,6 +2,9 @@
 export default defineNuxtConfig({
   modules: ['@nuxtjs/tailwindcss', '@nuxt/image'],
 
+  // SSR must be true for static site generation
+  ssr: true,
+
   app: {
     head: {
       title: 'Trebound - Unlock Your Digital Potential',
@@ -21,7 +24,12 @@ export default defineNuxtConfig({
     domains: ['images.unsplash.com', 'cdn.prod.website-files.com']
   },
 
+  // Deployment configuration
   nitro: {
-    preset: 'netlify'
+    preset: 'netlify',
+    prerender: {
+      crawlLinks: true,
+      routes: ['/']
+    }
   }
 })
