@@ -37,7 +37,15 @@ export default defineNuxtConfig({
   // Build configuration for Railway deployment
   nitro: {
     preset: 'node-server',
-    compatibilityDate: '2025-02-07'
+    compatibilityDate: '2025-02-07',
+    routeRules: {
+      '/**': { cors: true }
+    },
+    // Server configuration
+    server: {
+      host: '0.0.0.0',
+      port: process.env.PORT || 3000
+    }
   },
 
   runtimeConfig: {
