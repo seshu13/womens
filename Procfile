@@ -1,1 +1,1 @@
-web: node .output/server/index.mjs 
+web: PORT=$PORT node .output/server/index.mjs

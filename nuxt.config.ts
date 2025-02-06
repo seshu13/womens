@@ -37,7 +37,8 @@ export default defineNuxtConfig({
 
   // Build configuration for Railway deployment
   nitro: {
-    preset: 'node-server'
+    preset: 'node-server',
+    port: process.env.PORT || 3000,
   },
   runtimeConfig: {
     public: {
