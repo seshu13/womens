@@ -21,11 +21,15 @@ export default defineNuxtConfig({
   },
 
   image: {
-    domains: ['images.unsplash.com', 'cdn.prod.website-files.com']
+    // Only allow direct URLs
+    domains: ['images.unsplash.com', 'cdn.prod.website-files.com'],
+    provider: 'none'
   },
 
   // Build configuration
   nitro: {
     preset: 'static'
-  }
+  },
+
+  compatibilityDate: '2025-02-06'
 })

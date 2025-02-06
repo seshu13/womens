@@ -56,7 +56,7 @@
           <!-- Right image -->
           <div class="relative z-10">
             <div class="relative rounded-2xl overflow-hidden shadow-2xl shadow-primary/20 ring-1 ring-primary-light/20">
-              <nuxt-img 
+              <img 
                 src="https://images.unsplash.com/photo-1577490727009-58e3b41b302e?auto=format&fit=crop&q=80"
                 alt="Women's Day Team Building Activities"
                 class="w-full object-cover aspect-[4/3]"
@@ -138,7 +138,7 @@
 
               <!-- Image Container -->
               <div class="relative aspect-[2/1] w-full">
-                <nuxt-img 
+                <img 
                   :src="activity.image"
                   :alt="activity.title"
                   class="w-full h-full object-cover transform transition-all duration-700"
