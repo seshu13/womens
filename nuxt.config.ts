@@ -18,35 +18,15 @@ export default defineNuxtConfig({
     baseURL: '/'
   },
 
-  compatibilityDate: '2025-02-06',
-
-  // Add nitro configuration
+  // Nitro configuration for Netlify
   nitro: {
-    preset: 'netlify',
-    prerender: {
-      crawlLinks: true,
-      routes: [
-        '/'
-      ]
-    }
+    preset: 'netlify'
   },
 
-  // Add vite configuration
-  vite: {
-    server: {
-      fs: {
-        strict: false,
-        allow: ['..']
-      }
-    },
-    resolve: {
-      preserveSymlinks: true
-    }
-  },
-
-  // Development-specific settings
+  // Development settings
   devtools: { enabled: true },
 
+  // Runtime config
   runtimeConfig: {
     public: {
       unsplash: {
@@ -55,7 +35,7 @@ export default defineNuxtConfig({
     }
   },
 
-  // Image module configuration
+  // Image configuration
   image: {
     domains: [
       'images.unsplash.com',
