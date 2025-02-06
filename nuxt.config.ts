@@ -2,7 +2,7 @@
 export default defineNuxtConfig({
   modules: ['@nuxtjs/tailwindcss', '@nuxt/image'],
 
-  // SSR must be true for static site generation
+  // SSR configuration
   ssr: true,
 
   app: {
@@ -24,8 +24,8 @@ export default defineNuxtConfig({
     domains: ['images.unsplash.com', 'cdn.prod.website-files.com']
   },
 
-  // Server configuration
+  // Build configuration
   nitro: {
-    preset: 'node-server'
+    preset: 'static'
   }
 })
