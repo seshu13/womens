@@ -1,0 +1,23 @@
+{
+  "name": "trebound-website",
+  "private": true,
+  "scripts": {
+    "build": "nuxt build",
+    "dev": "nuxt dev",
+    "generate": "nuxt generate",
+    "preview": "nuxt preview"
+  },
+  "devDependencies": {
+    "@nuxt/image": "^1.9.0",
+    "@nuxt/types": "^2.18.1",
+    "@nuxtjs/tailwindcss": "^6.11.4",
+    "@types/node": "^22.13.1",
+    "nuxt": "^3.10.1",
+    "typescript": "^5.7.3"
+  },
+  "dependencies": {
+    "@headlessui/vue": "^1.7.23",
+    "@heroicons/vue": "^2.1.1",
+    "@vueuse/core": "^12.5.0"
+  }
+}
