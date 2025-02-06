@@ -4,7 +4,8 @@ export default defineNuxtConfig({
 
   typescript: {
     strict: true,
-    typeCheck: true
+    shim: false,
+    typeCheck: 'build'
   },
 
   // SSR configuration
