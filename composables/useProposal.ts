@@ -1,6 +1,5 @@
 import { ref, computed } from 'vue'
-import { useState } from '#imports'
-import { useStorage } from '@vueuse/core'
+import { useState, useNuxtApp } from '#imports'
 
 export interface Proposal {
   activities: string[]
@@ -23,34 +22,34 @@ export const useProposal = () => {
   const selectedCount = computed(() => selectedActivities.value.length)
 
   const openProposalModal = () => {
-    showProposalModal.value = true
+    if (process.client) {
+      showProposalModal.value = true
+    }
   }
 
   const closeProposalModal = () => {
-    showProposalModal.value = false
-    submitSuccess.value = false
+    if (process.client) {
+      showProposalModal.value = false
+      submitSuccess.value = false
+    }
   }
 
   const toggleActivity = (activityId: string) => {
-    // Only run on client side
-    if (process.client) {
-      const index = selectedActivities.value.indexOf(activityId)
-      
-      // Add haptic feedback if available
-      if (window.navigator && window.navigator.vibrate) {
-        window.navigator.vibrate(50)
-      }
+    if (!process.client) return
 
-      if (index === -1) {
-        // Add activity
-        selectedActivities.value.push(activityId)
-      } else {
-        // Remove activity
-        selectedActivities.value.splice(index, 1)
-      }
+    const index = selectedActivities.value.indexOf(activityId)
+    
+    // Add haptic feedback if available
+    if (window.navigator && window.navigator.vibrate) {
+      window.navigator.vibrate(50)
+    }
 
-      // For debugging
-      console.log('Current selected activities:', selectedActivities.value)
+    if (index === -1) {
+      // Add activity
+      selectedActivities.value = [...selectedActivities.value, activityId]
+    } else {
+      // Remove activity
+      selectedActivities.value = selectedActivities.value.filter(id => id !== activityId)
     }
   }
 

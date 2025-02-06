@@ -28,7 +28,7 @@
         <!-- CTA Button -->
         <div class="flex items-center gap-4">
           <button 
-            @click="useProposal().openProposalModal()"
+            @click="proposal.openProposalModal"
             class="bg-primary hover:bg-primary/90 text-white px-6 py-2.5 rounded-full font-medium transition-colors"
           >
             Get Started
@@ -84,6 +84,7 @@ import { ref } from 'vue'
 import { useProposal } from '~/composables/useProposal'
 
 const isMenuOpen = ref(false)
+const proposal = useProposal()
 
 const navigationItems = [
   { label: 'Activities', href: '#featured-activities' },
