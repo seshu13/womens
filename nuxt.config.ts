@@ -14,25 +14,12 @@ export default defineNuxtConfig({
         { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' },
         { rel: 'stylesheet', href: 'https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,700&display=swap' }
       ]
-    },
-    baseURL: '/'
+    }
   },
 
-  // Nitro configuration for Netlify
+  // Nitro configuration
   nitro: {
     preset: 'netlify'
-  },
-
-  // Development settings
-  devtools: { enabled: true },
-
-  // Runtime config
-  runtimeConfig: {
-    public: {
-      unsplash: {
-        baseURL: 'https://images.unsplash.com'
-      }
-    }
   },
 
   // Image configuration
@@ -41,5 +28,8 @@ export default defineNuxtConfig({
       'images.unsplash.com',
       'cdn.prod.website-files.com'
     ]
-  }
+  },
+
+  // SSR configuration
+  ssr: true
 })
