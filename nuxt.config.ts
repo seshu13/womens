@@ -24,12 +24,8 @@ export default defineNuxtConfig({
     domains: ['images.unsplash.com', 'cdn.prod.website-files.com']
   },
 
-  // Deployment configuration
+  // Server configuration
   nitro: {
-    preset: 'netlify',
-    prerender: {
-      crawlLinks: true,
-      routes: ['/']
-    }
+    preset: 'node-server'
   }
 })

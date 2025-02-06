@@ -60,4 +60,42 @@ npm run build
 
 ## License
 
-This project is proprietary and confidential. All rights reserved. 
+This project is proprietary and confidential. All rights reserved.
+
+## Docker Deployment
+
+You can deploy this application using Docker in two ways:
+
+### Using Docker Compose (Recommended)
+
+```bash
+# Build and start the application
+docker-compose up --build
+
+# Run in detached mode
+docker-compose up -d
+
+# Stop the application
+docker-compose down
+```
+
+### Using Docker Directly
+
+```bash
+# Build the image
+docker build -t trebound .
+
+# Run the container
+docker run -p 3000:3000 trebound
+
+# Run in detached mode
+docker run -d -p 3000:3000 trebound
+```
+
+The application will be available at http://localhost:3000
+
+### Environment Variables
+
+- `PORT`: Port to run the application (default: 3000)
+- `HOST`: Host to bind to (default: 0.0.0.0)
+- `NODE_ENV`: Node environment (default: production) 

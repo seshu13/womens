@@ -1,0 +1,25 @@
+# Dependencies
+node_modules
+npm-debug.log
+
+# Nuxt build output
+.nuxt
+.output
+dist
+
+# Git
+.git
+.gitignore
+
+# IDE
+.idea
+.vscode
+
+# Environment variables
+.env
+.env.*
+
+# Other
+README.md
+*.log
+.DS_Store 
