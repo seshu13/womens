@@ -1,4 +1,8 @@
-export default defineEventHandler((event) => {
-  const port = process.env.PORT || 3000
-  console.log(`Server attempting to start on port: ${port}`)
+export default defineEventHandler(() => {
+  // Log environment for debugging
+  console.log('Environment:', {
+    PORT: process.env.PORT,
+    NODE_ENV: process.env.NODE_ENV,
+    NITRO_PORT: process.env.NITRO_PORT,
+  })
 })

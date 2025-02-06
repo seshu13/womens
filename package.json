@@ -6,8 +6,8 @@
     "dev": "nuxt dev",
     "generate": "nuxt generate",
     "preview": "nuxt preview",
-    "start": "PORT=$PORT node .output/server/index.mjs",
-    "postinstall": "nuxt prepare"
+    "start": "node .output/server/index.mjs",
+    "postinstall": "nuxt prepare && nuxt build"
   },
   "devDependencies": {
     "@nuxt/image": "1.0.0",

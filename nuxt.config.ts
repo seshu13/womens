@@ -13,6 +13,10 @@ export default defineNuxtConfig({
   // Build configuration for production deployment
   nitro: {
     preset: 'node-server',
+    // Railway specific configuration
+    routeRules: {
+      '/**': { cors: true }
+    }
   },
 
   // App configuration
