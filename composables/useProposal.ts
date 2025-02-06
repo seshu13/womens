@@ -1,4 +1,5 @@
 import { ref, computed } from 'vue'
+import { useState } from '#imports'
 import { useStorage } from '@vueuse/core'
 
 export interface Proposal {
@@ -12,30 +13,23 @@ export interface Proposal {
 }
 
 export const useProposal = () => {
-  if (process.server) {
-    // Return empty state for SSR
-    return {
-      selectedActivities: ref<string[]>([]),
-      showProposalModal: ref(false),
-      isSubmitting: ref(false),
-      submitSuccess: ref(false),
-      hasSelectedActivities: computed(() => false),
-      selectedCount: computed(() => 0),
-      toggleActivity: () => {},
-      openProposalModal: () => {},
-      closeProposalModal: () => {},
-      submitProposal: async () => {}
-    }
-  }
-
-  // Client-side code
-  const selectedActivities = ref<string[]>([])
-  const showProposalModal = ref(false)
-  const isSubmitting = ref(false)
-  const submitSuccess = ref(false)
+  // Use Nuxt's useState for SSR-safe state management
+  const selectedActivities = useState<string[]>('selectedActivities', () => [])
+  const showProposalModal = useState<boolean>('showProposalModal', () => false)
+  const isSubmitting = useState<boolean>('isSubmitting', () => false)
+  const submitSuccess = useState<boolean>('submitSuccess', () => false)
 
   const hasSelectedActivities = computed(() => selectedActivities.value.length > 0)
   const selectedCount = computed(() => selectedActivities.value.length)
+
+  const openProposalModal = () => {
+    showProposalModal.value = true
+  }
+
+  const closeProposalModal = () => {
+    showProposalModal.value = false
+    submitSuccess.value = false
+  }
 
   const toggleActivity = (activityId: string) => {
     // Only run on client side
@@ -49,24 +43,15 @@ export const useProposal = () => {
 
       if (index === -1) {
         // Add activity
-        selectedActivities.value = [...selectedActivities.value, activityId]
+        selectedActivities.value.push(activityId)
       } else {
         // Remove activity
-        selectedActivities.value = selectedActivities.value.filter(id => id !== activityId)
+        selectedActivities.value.splice(index, 1)
       }
 
       // For debugging
       console.log('Current selected activities:', selectedActivities.value)
     }
-  }
-
-  const openProposalModal = () => {
-    showProposalModal.value = true
-  }
-
-  const closeProposalModal = () => {
-    showProposalModal.value = false
-    submitSuccess.value = false
   }
 
   const submitProposal = async (formData: Omit<Proposal, 'activities' | 'submittedAt'>) => {
@@ -112,9 +97,9 @@ export const useProposal = () => {
     submitSuccess,
     hasSelectedActivities,
     selectedCount,
-    toggleActivity,
     openProposalModal,
     closeProposalModal,
+    toggleActivity,
     submitProposal
   }
-} 
+}

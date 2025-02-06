@@ -28,10 +28,10 @@
         <!-- CTA Button -->
         <div class="flex items-center gap-4">
           <button 
-            @click="$emit('openModal')"
-            class="hidden md:inline-flex items-center px-6 py-2.5 rounded-full bg-primary text-white font-medium hover:bg-primary/90 transition-all shadow-lg shadow-primary/20 hover:shadow-primary/30 hover:-translate-y-0.5 transform"
+            @click="useProposal().openProposalModal()"
+            class="bg-primary hover:bg-primary/90 text-white px-6 py-2.5 rounded-full font-medium transition-colors"
           >
-            Register Now
+            Get Started
           </button>
 
           <!-- Mobile Menu Button -->
@@ -81,6 +81,7 @@
 
 <script setup lang="ts">
 import { ref } from 'vue'
+import { useProposal } from './useProposal'
 
 const isMenuOpen = ref(false)
 
