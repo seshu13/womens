@@ -30,13 +30,15 @@ export default defineNuxtConfig({
   },
 
   // Server configuration
-  devServer: {
+  server: {
+    host: '0.0.0.0', // Required for Railway
     port: process.env.PORT ? parseInt(process.env.PORT) : 3000
   },
 
   // Production server configuration
   vite: {
     server: {
+      host: '0.0.0.0', // Required for Railway
       port: process.env.PORT ? parseInt(process.env.PORT) : 3000
     }
   },
