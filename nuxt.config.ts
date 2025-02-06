@@ -25,13 +25,20 @@ export default defineNuxtConfig({
     ]
   },
 
-  // Static site generation configuration
-  ssr: true,
+  // Deployment configuration
   nitro: {
     preset: 'netlify',
-    prerender: {
-      crawlLinks: true,
-      routes: ['/']
+  },
+
+  // Build configuration
+  build: {
+    transpile: ['@headlessui/vue']
+  },
+
+  // Runtime configuration
+  runtimeConfig: {
+    public: {
+      siteUrl: process.env.SITE_URL || 'https://trebound.netlify.app'
     }
   }
 })

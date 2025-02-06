@@ -1,9 +1,10 @@
 [build]
-  command = "npm install && npm run generate"
+  command = "CI=true npm install --verbose && npm run generate"
   publish = ".output/public"
 
 [build.environment]
   NODE_VERSION = "18"
+  NPM_FLAGS = "--no-audit --no-fund"
 
 [[redirects]]
   from = "/*"
