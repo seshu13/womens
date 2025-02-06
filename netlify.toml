@@ -1,10 +1,12 @@
 [build]
-  command = "npm ci && npm run generate"
+  command = "npm run clean && npm ci && npm run generate"
   publish = ".output/public"
 
 [build.environment]
   NODE_VERSION = "18.19.0"
   NPM_CONFIG_LEGACY_PEER_DEPS = "true"
+  NITRO_PRESET = "netlify"
+  NODE_OPTIONS = "--max-old-space-size=4096"
 
 [[redirects]]
   from = "/*"

@@ -1,6 +1,6 @@
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
-  devtools: { enabled: true },
+  ssr: true,
   modules: ['@nuxtjs/tailwindcss', '@nuxt/image'],
 
   app: {
@@ -20,17 +20,14 @@ export default defineNuxtConfig({
 
   // Image configuration
   image: {
-    domains: [
-      'images.unsplash.com',
-      'cdn.prod.website-files.com'
-    ]
+    domains: ['images.unsplash.com', 'cdn.prod.website-files.com']
   },
 
   // Deployment configuration
   nitro: {
     preset: 'netlify',
-    prerender: {
-      crawlLinks: true
+    output: {
+      publicDir: '.output/public'
     }
   },
 
