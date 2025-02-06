@@ -83,9 +83,9 @@
 
 <script setup lang="ts">
 import { ref } from 'vue'
+import { useProposal } from '~/composables/useProposal'
 
 const isMenuOpen = ref(false)
-let proposalHandler: any = null
 
 // Navigation items defined statically to avoid SSR issues
 const navigationItems = [
@@ -97,11 +97,8 @@ const navigationItems = [
 // Handle proposal click in a client-safe way
 const handleProposalClick = () => {
   if (process.client) {
-    if (!proposalHandler) {
-      const { useProposal } = require('~/composables/useProposal')
-      proposalHandler = useProposal()
-    }
-    proposalHandler.openProposalModal()
+    const { openProposalModal } = useProposal()
+    openProposalModal()
   }
 }
 

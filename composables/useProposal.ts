@@ -11,11 +11,8 @@ export interface Proposal {
   submittedAt: string
 }
 
-// Create a singleton instance to avoid multiple state creation
-let instance: ReturnType<typeof createProposal> | null = null
-
-function createProposal() {
-  // Use Nuxt's useState for SSR-safe state management
+export const useProposal = () => {
+  // Use Nuxt's useState with proper SSR handling
   const selectedActivities = useState<string[]>('selectedActivities', () => [])
   const showProposalModal = useState<boolean>('showProposalModal', () => false)
   const isSubmitting = useState<boolean>('isSubmitting', () => false)
@@ -48,10 +45,10 @@ function createProposal() {
     }
 
     if (index === -1) {
-      // Add activity
+      // Add activity using immutable update
       selectedActivities.value = [...selectedActivities.value, activityId]
     } else {
-      // Remove activity
+      // Remove activity using immutable update
       selectedActivities.value = selectedActivities.value.filter(id => id !== activityId)
     }
   }
@@ -69,7 +66,7 @@ function createProposal() {
       }
       
       // Save to localStorage only on client side
-      if (process.client) {
+      if (typeof window !== 'undefined') {
         const savedProposals = JSON.parse(localStorage.getItem('proposals') || '[]')
         savedProposals.push(proposal)
         localStorage.setItem('proposals', JSON.stringify(savedProposals))
@@ -106,11 +103,4 @@ function createProposal() {
     toggleActivity,
     submitProposal
   }
-}
-
-export const useProposal = () => {
-  if (!instance) {
-    instance = createProposal()
-  }
-  return instance
 }
