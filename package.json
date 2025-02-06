@@ -7,7 +7,7 @@
     "generate": "nuxt generate",
     "preview": "nuxt preview",
     "start": "node .output/server/index.mjs",
-    "postinstall": "nuxt prepare && nuxt build"
+    "postinstall": "nuxt prepare"
   },
   "devDependencies": {
     "@nuxt/image": "1.0.0",

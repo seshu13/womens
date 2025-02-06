@@ -43,7 +43,8 @@ export default defineNuxtConfig({
       cdnURL: process.env.NUXT_PUBLIC_SITE_URL || ''
     },
     public: {
-      siteUrl: process.env.NUXT_PUBLIC_SITE_URL || ''
+      siteUrl: process.env.NUXT_PUBLIC_SITE_URL || '',
+      apiBase: process.env.RAILWAY_PUBLIC_URL || '',
     }
   },
 
