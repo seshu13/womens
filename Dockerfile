@@ -13,6 +13,8 @@ WORKDIR /app
 COPY --from=deps /app/node_modules ./node_modules
 COPY . .
 ENV NODE_ENV=production
+ENV NITRO_HOST=0.0.0.0
+ENV NITRO_PORT=3000
 RUN npm run build
 
 # Runner
@@ -20,7 +22,7 @@ FROM base AS runner
 WORKDIR /app
 ENV NODE_ENV=production
 ENV NITRO_HOST=0.0.0.0
-ENV PORT=3000
+ENV NITRO_PORT=3000
 
 COPY --from=builder /app/.output /app/.output
 COPY --from=builder /app/package.json ./package.json

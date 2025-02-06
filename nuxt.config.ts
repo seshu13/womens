@@ -14,6 +14,10 @@ export default defineNuxtConfig({
   nitro: {
     preset: 'node-server',
     timing: false,
+    server: {
+      host: process.env.NITRO_HOST,
+      port: process.env.NITRO_PORT ? parseInt(process.env.NITRO_PORT) : 3000
+    }
   },
 
   experimental: {
