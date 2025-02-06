@@ -1,7 +1,4 @@
 export default defineEventHandler((event) => {
-  // Railway will automatically set the PORT environment variable
-  // This middleware is just for local development
-  if (!process.env.PORT) {
-    process.env.PORT = '3000'
-  }
+  const port = process.env.PORT || 3000
+  console.log(`Server attempting to start on port: ${port}`)
 })

@@ -1,4 +1,3 @@
-// https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
   modules: ['@nuxtjs/tailwindcss', '@nuxt/image'],
 
@@ -11,6 +10,12 @@ export default defineNuxtConfig({
   // SSR configuration
   ssr: true,
 
+  // Build configuration for production deployment
+  nitro: {
+    preset: 'node-server',
+  },
+
+  // App configuration
   app: {
     head: {
       title: 'Trebound - Unlock Your Digital Potential',
@@ -23,34 +28,24 @@ export default defineNuxtConfig({
         { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' },
         { rel: 'stylesheet', href: 'https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,700&display=swap' }
       ]
-    },
-    baseURL: '/',
-    buildAssetsDir: '/_nuxt/',
-    cdnURL: process.env.NUXT_PUBLIC_SITE_URL
-  },
-
-  image: {
-    domains: ['images.unsplash.com', 'cdn.prod.website-files.com'],
-    provider: 'none'
-  },
-
-  // Build configuration for Railway deployment
-  nitro: {
-    preset: 'node-server',
-    compatibilityDate: '2025-02-07',
-    routeRules: {
-      '/**': { cors: true }
-    },
-    // Server configuration
-    server: {
-      host: '0.0.0.0',
-      port: process.env.PORT || 3000
     }
   },
 
+  // Runtime config
   runtimeConfig: {
+    app: {
+      baseURL: '/',
+      buildAssetsDir: '/_nuxt/',
+      cdnURL: process.env.NUXT_PUBLIC_SITE_URL || ''
+    },
     public: {
       siteUrl: process.env.NUXT_PUBLIC_SITE_URL || ''
     }
+  },
+
+  // Image configuration
+  image: {
+    domains: ['images.unsplash.com', 'cdn.prod.website-files.com'],
+    provider: 'none'
   }
 })
