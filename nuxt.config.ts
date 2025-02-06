@@ -26,9 +26,9 @@ export default defineNuxtConfig({
     provider: 'none'
   },
 
-  // Build configuration
+  // Build configuration for Railway deployment
   nitro: {
-    preset: 'static'
+    preset: 'node'
   },
 
   compatibilityDate: '2025-02-06'
