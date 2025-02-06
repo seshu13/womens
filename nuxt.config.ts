@@ -37,21 +37,11 @@ export default defineNuxtConfig({
 
   // Build configuration for Railway deployment
   nitro: {
-    preset: 'node',
-    routeRules: {
-      '/**': { cors: true }
-    }
-  },
-  vite: {
-    server: {
-      hmr: {
-        port: process.env.PORT ? parseInt(process.env.PORT) : 24678
-      }
-    }
+    preset: 'node-server'
   },
   runtimeConfig: {
-    app: {
-      baseURL: process.env.NUXT_PUBLIC_SITE_URL || `http://localhost:${process.env.PORT || 3000}`
+    public: {
+      siteUrl: process.env.NUXT_PUBLIC_SITE_URL || ''
     }
   }
 })
