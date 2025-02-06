@@ -5,13 +5,14 @@ WORKDIR /app
 
 # Copy package files
 COPY package*.json ./
-RUN npm install
+RUN npm ci
 
 # Copy source
 COPY . .
 
 # Build application
-RUN npm run build
+ENV NODE_ENV=production
+RUN npm run generate
 
 # Production stage
 FROM node:18-alpine
@@ -19,15 +20,13 @@ FROM node:18-alpine
 WORKDIR /app
 
 # Copy built application
-COPY --from=builder /app/.output/ ./.output/
+COPY --from=builder /app/.output/public ./dist
 
-# Set environment variables
-ENV HOST=0.0.0.0
-ENV PORT=3000
-ENV NODE_ENV=production
+# Install serve to serve static files
+RUN npm install -g serve
 
 # Expose port
 EXPOSE 3000
 
 # Start the application
-CMD ["node", ".output/server/index.mjs"] 
+CMD ["serve", "-s", "dist", "-p", "3000"] 
