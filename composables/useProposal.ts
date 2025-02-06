@@ -12,11 +12,19 @@ export interface Proposal {
 }
 
 export const useProposal = () => {
-  // Use Nuxt's useState with proper SSR handling
-  const selectedActivities = useState<string[]>('selectedActivities', () => [])
-  const showProposalModal = useState<boolean>('showProposalModal', () => false)
-  const isSubmitting = useState<boolean>('isSubmitting', () => false)
-  const submitSuccess = useState<boolean>('submitSuccess', () => false)
+  // For static generation, we'll use ref instead of useState
+  const selectedActivities = ref<string[]>([])
+  const showProposalModal = ref(false)
+  const isSubmitting = ref(false)
+  const submitSuccess = ref(false)
+
+  // Initialize from localStorage if available
+  if (process.client) {
+    const stored = localStorage.getItem('selectedActivities')
+    if (stored) {
+      selectedActivities.value = JSON.parse(stored)
+    }
+  }
 
   const hasSelectedActivities = computed(() => selectedActivities.value.length > 0)
   const selectedCount = computed(() => selectedActivities.value.length)
@@ -51,6 +59,9 @@ export const useProposal = () => {
       // Remove activity using immutable update
       selectedActivities.value = selectedActivities.value.filter(id => id !== activityId)
     }
+
+    // Save to localStorage
+    localStorage.setItem('selectedActivities', JSON.stringify(selectedActivities.value))
   }
 
   const submitProposal = async (formData: Omit<Proposal, 'activities' | 'submittedAt'>) => {
@@ -65,18 +76,17 @@ export const useProposal = () => {
         submittedAt: new Date().toISOString()
       }
       
-      // Save to localStorage only on client side
-      if (typeof window !== 'undefined') {
-        const savedProposals = JSON.parse(localStorage.getItem('proposals') || '[]')
-        savedProposals.push(proposal)
-        localStorage.setItem('proposals', JSON.stringify(savedProposals))
-      }
+      // Save to localStorage
+      const savedProposals = JSON.parse(localStorage.getItem('proposals') || '[]')
+      savedProposals.push(proposal)
+      localStorage.setItem('proposals', JSON.stringify(savedProposals))
 
       // Simulate API delay
       await new Promise(resolve => setTimeout(resolve, 1000))
 
       // Reset state
       selectedActivities.value = []
+      localStorage.removeItem('selectedActivities')
       submitSuccess.value = true
 
       // Close modal after success message
