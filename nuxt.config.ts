@@ -13,11 +13,7 @@ export default defineNuxtConfig({
   // Build configuration for production deployment
   nitro: {
     preset: 'node-server',
-    timing: false,
-    server: {
-      host: process.env.NITRO_HOST,
-      port: process.env.NITRO_PORT ? parseInt(process.env.NITRO_PORT) : 3000
-    }
+    timing: false
   },
 
   experimental: {
@@ -47,7 +43,9 @@ export default defineNuxtConfig({
     app: {
       baseURL: '/',
       buildAssetsDir: '/_nuxt/',
-      cdnURL: process.env.NUXT_PUBLIC_SITE_URL || ''
+      cdnURL: process.env.NUXT_PUBLIC_SITE_URL || '',
+      host: process.env.NITRO_HOST,
+      port: process.env.NITRO_PORT ? parseInt(process.env.NITRO_PORT) : 3000
     },
     public: {
       siteUrl: process.env.NUXT_PUBLIC_SITE_URL || '',
