@@ -1,5 +1,6 @@
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
+  devtools: { enabled: true },
   modules: ['@nuxtjs/tailwindcss', '@nuxt/image'],
 
   app: {
@@ -28,11 +29,25 @@ export default defineNuxtConfig({
   // Deployment configuration
   nitro: {
     preset: 'netlify',
+    prerender: {
+      crawlLinks: true
+    }
   },
 
   // Build configuration
   build: {
     transpile: ['@headlessui/vue']
+  },
+
+  // TypeScript configuration
+  typescript: {
+    strict: true,
+    typeCheck: true
+  },
+
+  // Development configuration
+  experimental: {
+    payloadExtraction: false
   },
 
   // Runtime configuration
