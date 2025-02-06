@@ -26,8 +26,19 @@ export default defineNuxtConfig({
     },
     baseURL: '/',
     buildAssetsDir: '/_nuxt/',
-    cdnURL: process.env.NUXT_PUBLIC_SITE_URL,
-    port: process.env.PORT || 3000
+    cdnURL: process.env.NUXT_PUBLIC_SITE_URL
+  },
+
+  // Server configuration
+  devServer: {
+    port: process.env.PORT ? parseInt(process.env.PORT) : 3000
+  },
+
+  // Production server configuration
+  vite: {
+    server: {
+      port: process.env.PORT ? parseInt(process.env.PORT) : 3000
+    }
   },
 
   image: {
@@ -38,7 +49,8 @@ export default defineNuxtConfig({
 
   // Build configuration for Railway deployment
   nitro: {
-    preset: 'node-server'
+    preset: 'node-server',
+    compatibilityDate: '2025-02-07'
   },
   runtimeConfig: {
     public: {
