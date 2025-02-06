@@ -17,11 +17,6 @@ export default defineNuxtConfig({
     }
   },
 
-  // Nitro configuration
-  nitro: {
-    preset: 'netlify'
-  },
-
   // Image configuration
   image: {
     domains: [
@@ -30,6 +25,10 @@ export default defineNuxtConfig({
     ]
   },
 
-  // SSR configuration
-  ssr: true
+  // Static site generation
+  ssr: true,
+  nitro: {
+    preset: 'netlify',
+    static: true
+  }
 })
