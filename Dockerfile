@@ -15,8 +15,18 @@ COPY . .
 ENV NODE_ENV=production
 RUN npm run build
 
-# Production
-FROM nginx:alpine
-COPY --from=builder /app/.output/public /usr/share/nginx/html
-EXPOSE 80
-CMD ["nginx", "-g", "daemon off;"]
+# Runner - Using Node.js to serve static files
+FROM node:20-slim
+WORKDIR /app
+ENV NODE_ENV=production
+
+# Install serve package globally
+RUN npm install -g serve
+
+# Copy only the built static files
+COPY --from=builder /app/.output/public ./public
+
+EXPOSE 3000
+
+# Serve static files using serve
+CMD ["serve", "-s", "public", "-l", "3000"]
