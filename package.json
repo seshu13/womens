@@ -6,7 +6,7 @@
     "dev": "nuxt dev",
     "generate": "nuxt generate",
     "preview": "nuxt preview",
-    "start": "node .output/server/index.mjs",
+    "start": "serve -s .output/public",
     "postinstall": "nuxt prepare"
   },
   "devDependencies": {
@@ -21,6 +21,7 @@
     "@headlessui/vue": "1.7.19",
     "@heroicons/vue": "2.1.1",
     "@vueuse/core": "10.7.2",
+    "serve": "14.2.4",
     "vue": "3.4.15"
   }
 }
