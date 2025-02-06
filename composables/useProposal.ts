@@ -12,9 +12,8 @@ export interface Proposal {
 }
 
 export const useProposal = () => {
-  // Initialize with an empty array and ensure it's reactive
+  // Only create refs if we're on the client side
   const selectedActivities = ref<string[]>([])
-
   const showProposalModal = ref(false)
   const isSubmitting = ref(false)
   const submitSuccess = ref(false)
@@ -23,23 +22,26 @@ export const useProposal = () => {
   const selectedCount = computed(() => selectedActivities.value.length)
 
   const toggleActivity = (activityId: string) => {
-    const index = selectedActivities.value.indexOf(activityId)
-    
-    // Add haptic feedback if available
-    if (window.navigator && window.navigator.vibrate) {
-      window.navigator.vibrate(50)
-    }
+    // Only run on client side
+    if (process.client) {
+      const index = selectedActivities.value.indexOf(activityId)
+      
+      // Add haptic feedback if available
+      if (window.navigator && window.navigator.vibrate) {
+        window.navigator.vibrate(50)
+      }
 
-    if (index === -1) {
-      // Add activity
-      selectedActivities.value = [...selectedActivities.value, activityId]
-    } else {
-      // Remove activity
-      selectedActivities.value = selectedActivities.value.filter(id => id !== activityId)
-    }
+      if (index === -1) {
+        // Add activity
+        selectedActivities.value = [...selectedActivities.value, activityId]
+      } else {
+        // Remove activity
+        selectedActivities.value = selectedActivities.value.filter(id => id !== activityId)
+      }
 
-    // For debugging
-    console.log('Current selected activities:', selectedActivities.value)
+      // For debugging
+      console.log('Current selected activities:', selectedActivities.value)
+    }
   }
 
   const openProposalModal = () => {
@@ -52,6 +54,8 @@ export const useProposal = () => {
   }
 
   const submitProposal = async (formData: Omit<Proposal, 'activities' | 'submittedAt'>) => {
+    if (!process.client) return
+
     isSubmitting.value = true
 
     try {
