@@ -25,9 +25,12 @@ RUN npm install -g serve@14.2.1
 # Copy only the generated static files
 COPY --from=builder /app/.output/public /app/public
 
+# Copy Procfile
+COPY Procfile /app/Procfile
+
 EXPOSE 3000
 ENV PORT=3000
 ENV HOST=0.0.0.0
 
-# Use serve to host the static files
-CMD ["serve", "-s", "/app/public", "-l", "tcp://0.0.0.0:3000"]
+# Let Railway use the Procfile
+CMD ["npx", "serve", "-s", "/app/public", "-l", "tcp://0.0.0.0:3000"]
