@@ -8,14 +8,14 @@ export default defineNuxtConfig({
   },
 
   // SSR configuration
-  ssr: true,
+  ssr: false,
 
-  // Build configuration for production deployment
+  // Static site generation configuration
   nitro: {
-    preset: 'node-server',
-    // Add these settings for better SSR handling
-    routeRules: {
-      '/**': { ssr: true }
+    preset: 'static',
+    prerender: {
+      crawlLinks: true,
+      routes: ['/']
     }
   },
 
