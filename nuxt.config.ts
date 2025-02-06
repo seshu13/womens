@@ -17,17 +17,11 @@ export default defineNuxtConfig({
     }
   },
 
-  // Image configuration
   image: {
     domains: ['images.unsplash.com', 'cdn.prod.website-files.com']
   },
 
-  // Build configuration
   nitro: {
     preset: 'netlify'
-  },
-
-  build: {
-    transpile: ['@headlessui/vue']
   }
 })
