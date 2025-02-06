@@ -27,12 +27,14 @@
 
         <!-- CTA Button -->
         <div class="flex items-center gap-4">
-          <button 
-            @click="proposal.openProposalModal"
-            class="bg-primary hover:bg-primary/90 text-white px-6 py-2.5 rounded-full font-medium transition-colors"
-          >
-            Get Started
-          </button>
+          <ClientOnly>
+            <button 
+              @click="handleProposalClick"
+              class="bg-primary hover:bg-primary/90 text-white px-6 py-2.5 rounded-full font-medium transition-colors"
+            >
+              Get Started
+            </button>
+          </ClientOnly>
 
           <!-- Mobile Menu Button -->
           <button 
@@ -81,16 +83,27 @@
 
 <script setup lang="ts">
 import { ref } from 'vue'
-import { useProposal } from '~/composables/useProposal'
 
 const isMenuOpen = ref(false)
-const proposal = useProposal()
+let proposalHandler: any = null
 
+// Navigation items defined statically to avoid SSR issues
 const navigationItems = [
   { label: 'Activities', href: '#featured-activities' },
   { label: 'Why Us', href: '#why-us' },
   { label: 'Contact', href: '#contact' }
 ]
+
+// Handle proposal click in a client-safe way
+const handleProposalClick = () => {
+  if (process.client) {
+    if (!proposalHandler) {
+      const { useProposal } = require('~/composables/useProposal')
+      proposalHandler = useProposal()
+    }
+    proposalHandler.openProposalModal()
+  }
+}
 
 defineEmits<{
   openModal: []

@@ -1,5 +1,5 @@
 import { ref, computed } from 'vue'
-import { useState, useNuxtApp } from '#imports'
+import { useState } from '#imports'
 
 export interface Proposal {
   activities: string[]
@@ -11,7 +11,10 @@ export interface Proposal {
   submittedAt: string
 }
 
-export const useProposal = () => {
+// Create a singleton instance to avoid multiple state creation
+let instance: ReturnType<typeof createProposal> | null = null
+
+function createProposal() {
   // Use Nuxt's useState for SSR-safe state management
   const selectedActivities = useState<string[]>('selectedActivities', () => [])
   const showProposalModal = useState<boolean>('showProposalModal', () => false)
@@ -65,10 +68,12 @@ export const useProposal = () => {
         submittedAt: new Date().toISOString()
       }
       
-      // Save to localStorage
-      const savedProposals = JSON.parse(localStorage.getItem('proposals') || '[]')
-      savedProposals.push(proposal)
-      localStorage.setItem('proposals', JSON.stringify(savedProposals))
+      // Save to localStorage only on client side
+      if (process.client) {
+        const savedProposals = JSON.parse(localStorage.getItem('proposals') || '[]')
+        savedProposals.push(proposal)
+        localStorage.setItem('proposals', JSON.stringify(savedProposals))
+      }
 
       // Simulate API delay
       await new Promise(resolve => setTimeout(resolve, 1000))
@@ -101,4 +106,11 @@ export const useProposal = () => {
     toggleActivity,
     submitProposal
   }
+}
+
+export const useProposal = () => {
+  if (!instance) {
+    instance = createProposal()
+  }
+  return instance
 }
