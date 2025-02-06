@@ -2,6 +2,11 @@
 export default defineNuxtConfig({
   modules: ['@nuxtjs/tailwindcss', '@nuxt/image'],
 
+  typescript: {
+    strict: true,
+    typeCheck: true
+  },
+
   // SSR configuration
   ssr: true,
 
@@ -29,7 +34,5 @@ export default defineNuxtConfig({
   // Build configuration for Railway deployment
   nitro: {
     preset: 'node'
-  },
-
-  compatibilityDate: '2025-02-06'
+  }
 })
