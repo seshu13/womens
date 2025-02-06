@@ -12,7 +12,11 @@ export default defineNuxtConfig({
 
   // Build configuration for production deployment
   nitro: {
-    preset: 'node-server'
+    preset: 'node-server',
+    // Add these settings for better SSR handling
+    routeRules: {
+      '/**': { ssr: true }
+    }
   },
 
   // App configuration

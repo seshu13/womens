@@ -1,12 +1,5 @@
-export default defineNuxtPlugin(() => {
-  const nuxtApp = useNuxtApp()
-  
-  // Ensure nuxt app is available
-  if (!nuxtApp) {
-    console.error('Nuxt app not initialized')
-    throw new Error('Nuxt app not initialized')
-  }
-
+export default defineNuxtPlugin((nuxtApp) => {
+  // Use the nuxtApp instance passed to the plugin
   return {
     provide: {
       isNuxtReady: true
