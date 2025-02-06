@@ -29,22 +29,7 @@ export default defineNuxtConfig({
     cdnURL: process.env.NUXT_PUBLIC_SITE_URL
   },
 
-  // Server configuration
-  server: {
-    host: '0.0.0.0', // Required for Railway
-    port: process.env.PORT ? parseInt(process.env.PORT) : 3000
-  },
-
-  // Production server configuration
-  vite: {
-    server: {
-      host: '0.0.0.0', // Required for Railway
-      port: process.env.PORT ? parseInt(process.env.PORT) : 3000
-    }
-  },
-
   image: {
-    // Only allow direct URLs
     domains: ['images.unsplash.com', 'cdn.prod.website-files.com'],
     provider: 'none'
   },
@@ -54,6 +39,7 @@ export default defineNuxtConfig({
     preset: 'node-server',
     compatibilityDate: '2025-02-07'
   },
+
   runtimeConfig: {
     public: {
       siteUrl: process.env.NUXT_PUBLIC_SITE_URL || ''

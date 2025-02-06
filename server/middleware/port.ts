@@ -1,6 +1,6 @@
 export default defineEventHandler((event) => {
-  const config = useRuntimeConfig()
-  // Set default port if not provided
+  // Railway will automatically set the PORT environment variable
+  // This middleware is just for local development
   if (!process.env.PORT) {
     process.env.PORT = '3000'
   }
