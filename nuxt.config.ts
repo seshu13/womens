@@ -23,7 +23,10 @@ export default defineNuxtConfig({
         { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' },
         { rel: 'stylesheet', href: 'https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,700&display=swap' }
       ]
-    }
+    },
+    baseURL: '/',
+    buildAssetsDir: '/_nuxt/',
+    cdnURL: process.env.NUXT_PUBLIC_SITE_URL
   },
 
   image: {
