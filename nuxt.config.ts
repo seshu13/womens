@@ -35,5 +35,10 @@ export default defineNuxtConfig({
   // Build configuration for Railway deployment
   nitro: {
     preset: 'node'
+  },
+  runtimeConfig: {
+    app: {
+      baseURL: process.env.NUXT_PUBLIC_SITE_URL || 'http://localhost:3000'
+    }
   }
 })
