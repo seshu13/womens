@@ -25,10 +25,13 @@ export default defineNuxtConfig({
     ]
   },
 
-  // Static site generation
+  // Static site generation configuration
   ssr: true,
   nitro: {
     preset: 'netlify',
-    static: true
+    prerender: {
+      crawlLinks: true,
+      routes: ['/']
+    }
   }
 })
