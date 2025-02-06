@@ -81,7 +81,7 @@
 
 <script setup lang="ts">
 import { ref } from 'vue'
-import { useProposal } from './useProposal'
+import { useProposal } from '~/composables/useProposal'
 
 const isMenuOpen = ref(false)
 
