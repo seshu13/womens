@@ -1,8 +1,6 @@
 'use client';
 
-import React, { useEffect, useState } from 'react';
-import { Transition } from '@headlessui/react';
-import { ArrowRightIcon } from '@heroicons/react/20/solid';
+import React from 'react';
 
 interface FloatingActionButtonProps {
   show: boolean;
@@ -11,18 +9,6 @@ interface FloatingActionButtonProps {
 }
 
 export default function FloatingActionButton({ show, count, onClick }: FloatingActionButtonProps) {
-  const [isMobile, setIsMobile] = useState(false);
-
-  useEffect(() => {
-    const checkMobile = () => {
-      setIsMobile(window.innerWidth < 768);
-    };
-    
-    checkMobile();
-    window.addEventListener('resize', checkMobile);
-    return () => window.removeEventListener('resize', checkMobile);
-  }, []);
-
   if (!show) return null;
 
   return (

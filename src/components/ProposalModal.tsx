@@ -1,8 +1,15 @@
+interface FormData {
+  name: string;
+  email: string;
+  company: string;
+  message?: string;
+}
+
 interface ProposalModalProps {
   show: boolean;
   selectedActivities: string[];
   onClose: () => void;
-  onSubmit: (data: any) => Promise<void>;
+  onSubmit: (data: FormData) => Promise<void>;
   isSubmitting?: boolean;
 }
 
@@ -52,7 +59,12 @@ export default function ProposalModal({
             <form onSubmit={async (e) => {
               e.preventDefault();
               const formData = new FormData(e.currentTarget);
-              const data = Object.fromEntries(formData.entries());
+              const data: FormData = {
+                name: formData.get('name') as string,
+                email: formData.get('email') as string,
+                company: formData.get('company') as string,
+                message: formData.get('message') as string || undefined
+              };
               await onSubmit(data);
             }}>
               <div className="space-y-4">
