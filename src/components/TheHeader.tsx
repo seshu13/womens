@@ -2,9 +2,11 @@
 
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
+import { useProposal } from '@/hooks/useProposal';
 
 export default function TheHeader() {
   const pathname = usePathname();
+  const { openProposalModal } = useProposal();
 
   const isActive = (path: string) => pathname === path;
 
@@ -48,7 +50,7 @@ export default function TheHeader() {
               </span>
             </Link>
             <Link 
-              href="/activities" 
+              href="/#activities" 
               className={`relative text-base font-medium transition-all group ${
                 isActive('/activities') 
                   ? 'text-[#053257]' 
@@ -61,7 +63,7 @@ export default function TheHeader() {
               </span>
             </Link>
             <Link 
-              href="/why-us" 
+              href="/#why-us" 
               className={`relative text-base font-medium transition-all group ${
                 isActive('/why-us') 
                   ? 'text-[#053257]' 
@@ -89,12 +91,12 @@ export default function TheHeader() {
           </nav>
 
           {/* CTA Button */}
-          <Link
-            href="/contact"
+          <button
+            onClick={openProposalModal}
             className="inline-flex items-center px-6 py-2.5 rounded-full bg-[#FF4C39] text-white text-base font-inter hover:bg-[#FF4C39]/90 transition-all shadow-lg shadow-[#FF4C39]/30 hover:shadow-[#FF4C39]/40 hover:-translate-y-0.5 transform"
           >
             Register Now
-          </Link>
+          </button>
         </div>
       </div>
     </header>

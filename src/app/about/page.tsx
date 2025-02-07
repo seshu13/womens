@@ -51,6 +51,86 @@ export default function AboutPage() {
         </div>
       </section>
 
+      {/* Team Spirit Section */}
+      <section className="py-20 bg-gradient-to-br from-primary/5 via-white to-secondary-light/20">
+        <div className="container mx-auto px-4">
+          <div className="grid lg:grid-cols-2 gap-16 items-center">
+            {/* Left Content */}
+            <div className="space-y-8">
+              <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-[#FFB47333] backdrop-blur-sm">
+                <span className="text-[#FF4C39] font-inter text-base">Our Culture</span>
+              </div>
+              
+              <h2 className="text-4xl lg:text-5xl font-display font-bold text-secondary leading-tight">
+                Our team is playful, engaging, highly energetic and believes in teamwork.
+              </h2>
+              
+              <div className="grid gap-6">
+                <div className="flex items-start gap-4">
+                  <div className="w-12 h-12 rounded-xl bg-primary/10 flex items-center justify-center flex-shrink-0">
+                    <svg className="w-6 h-6 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
+                    </svg>
+                  </div>
+                  <div>
+                    <h3 className="text-xl font-bold text-secondary mb-2">30+ years of experience</h3>
+                    <p className="text-secondary/70">With 30+ years of combined experience, our team has the experience and know-how to help you plan the perfect teambuilding experience.</p>
+                  </div>
+                </div>
+
+                <div className="flex items-start gap-4">
+                  <div className="w-12 h-12 rounded-xl bg-primary/10 flex items-center justify-center flex-shrink-0">
+                    <svg className="w-6 h-6 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M13 10V3L4 14h7v7l9-11h-7z" />
+                    </svg>
+                  </div>
+                  <div>
+                    <h3 className="text-xl font-bold text-secondary mb-2">Great Support</h3>
+                    <p className="text-secondary/70">We have a proven methodology for delivering exceptional customer service. You can expect to receive professional and personalized support from our team at all stages of your team building plan.</p>
+                  </div>
+                </div>
+
+                <div className="flex items-start gap-4">
+                  <div className="w-12 h-12 rounded-xl bg-primary/10 flex items-center justify-center flex-shrink-0">
+                    <svg className="w-6 h-6 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M14.828 14.828a4 4 0 01-5.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                    </svg>
+                  </div>
+                  <div>
+                    <h3 className="text-xl font-bold text-secondary mb-2">Expect fun and intense adventures</h3>
+                    <p className="text-secondary/70">Our team will help you increase employee participation, energize the team, build trust and have fun through a variety of unique and exciting teambuilding activities.</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* Right Image */}
+            <div className="relative">
+              <div className="relative aspect-square rounded-3xl overflow-hidden shadow-2xl transform hover:scale-[1.02] transition-transform duration-300">
+                <div className="absolute inset-0 bg-gradient-to-t from-black/30 to-transparent z-10"></div>
+                <Image
+                  src="/team-work.jpg"
+                  alt="Team Work Illustration"
+                  fill
+                  className="object-cover"
+                />
+              </div>
+              {/* Decorative Elements */}
+              <div className="absolute -top-8 -right-8 w-32 h-32 bg-primary/10 rounded-full blur-3xl"></div>
+              <div className="absolute -bottom-8 -left-8 w-40 h-40 bg-secondary/10 rounded-full blur-3xl"></div>
+              
+              {/* Stats Badge */}
+              <div className="absolute bottom-8 right-8 bg-white/90 backdrop-blur-sm rounded-2xl p-4 shadow-lg z-20">
+                <div className="text-center">
+                  <div className="text-3xl font-bold text-primary">500+</div>
+                  <div className="text-sm text-secondary">Happy Teams</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
       {/* Company Story */}
       <section className="py-20">
         <div className="container mx-auto px-4">

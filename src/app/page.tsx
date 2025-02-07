@@ -6,103 +6,39 @@ import { useProposal } from '@/hooks/useProposal';
 import FloatingActionButton from '@/components/FloatingActionButton';
 import ProposalModal from '@/components/ProposalModal';
 import { TeamIcon, WellnessIcon, CreativityIcon, LeadershipIcon, CompanyIcon, ActivityIcon } from '@/components/icons';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import { createClient } from '@supabase/supabase-js';
+import { Database } from '@/types/supabase';
+
+// Create Supabase client
+const supabase = createClient<Database>(
+  process.env.NEXT_PUBLIC_SUPABASE_URL!,
+  process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
+);
 
 interface Activity {
   id: string;
   title: string;
   description: string;
-  image: string;
+  image_url: string;
+  image: string; // For UI compatibility
+  category: ActivityCategory;
   badge?: string;
+  is_active: boolean;
+  created_at: string;
 }
 
-type ActivityCategory = 'indoor' | 'outdoor' | 'virtual' | 'workshops';
-
-const activities: Record<ActivityCategory, Activity[]> = {
-  indoor: [
-    {
-      id: 'art-workshop',
-      title: 'Art Workshop',
-      description: 'Relax, unwind, and paint your ideas to life! This guided art session helps de-stress, inspire creativity, and build teamwork in a fun, informal setting. No experience needed—just bring your imagination!',
-      image: 'https://images.unsplash.com/photo-1460661419201-fd4cecdf8a8b?auto=format&fit=crop&q=80'
-    },
-    {
-      id: 'lipstick-making',
-      title: 'Lipstick Making Workshop',
-      description: 'Create your own signature lipstick shade in this hands-on beauty workshop. Perfect for teams looking to mix fun with creativity!',
-      image: 'https://images.unsplash.com/photo-1512496015851-a90fb38ba796?auto=format&fit=crop&q=80',
-      badge: 'Coming Soon'
-    },
-    {
-      id: 'wellness',
-      title: 'Wellness & Mindfulness',
-      description: 'Take a break from work stress with mindful, art-based activities designed to refresh your mind and enhance well-being. Perfect for corporate teams seeking balance!',
-      image: 'https://images.unsplash.com/photo-1545205597-3d9d02c29597?auto=format&fit=crop&q=80'
-    }
-  ],
-  outdoor: [
-    {
-      id: 'golf-training',
-      title: 'Golf Training',
-      description: 'Master the art of precision and patience with this beginner-friendly golf session. A great way to bond with colleagues, build strategy skills, and enjoy a refreshing outdoor experience.',
-      image: 'https://images.unsplash.com/photo-1535131749006-b7f58c99034b?auto=format&fit=crop&q=80'
-    },
-    {
-      id: 'bike-riding',
-      title: 'Bike Riding Classes',
-      description: 'Whether you\'re a first-time rider or looking to refine your motorcycle skills, our women-centric biking classes provide a safe and supportive environment to build confidence on two wheels.',
-      image: 'https://images.unsplash.com/photo-1558981806-ec527fa84c39?auto=format&fit=crop&q=80'
-    },
-    {
-      id: 'wine-tour',
-      title: 'Wine Tour',
-      description: 'Step into a stunning vineyard for a guided wine-tasting experience. Learn about winemaking, explore the estate, and indulge in a relaxing, sophisticated day out.',
-      image: 'https://images.unsplash.com/photo-1510812431401-41d2bd2722f3?auto=format&fit=crop&q=80'
-    }
-  ],
-  virtual: [
-    {
-      id: 'virtual-cooking',
-      title: 'Virtual Cooking Class',
-      description: 'Join our expert chefs online for an interactive cooking session. Learn new recipes, cooking techniques, and enjoy a delicious meal together, virtually!',
-      image: 'https://images.unsplash.com/photo-1556910103-1c02745aae4d?auto=format&fit=crop&q=80'
-    },
-    {
-      id: 'virtual-yoga',
-      title: 'Virtual Yoga Session',
-      description: 'Experience the benefits of yoga from anywhere. Our expert instructors will guide you through poses and meditation techniques for a refreshing mind-body experience.',
-      image: 'https://images.unsplash.com/photo-1545205597-3d9d02c29597?auto=format&fit=crop&q=80'
-    },
-    {
-      id: 'virtual-team-building',
-      title: 'Virtual Team Building',
-      description: 'Engage in fun online activities designed to strengthen team bonds. From virtual escape rooms to online trivia, there\'s something for everyone!',
-      image: 'https://images.unsplash.com/photo-1519389950473-47ba0277781c?auto=format&fit=crop&q=80'
-    }
-  ],
-  workshops: [
-    {
-      id: 'self-defense',
-      title: 'Self-Defense Program',
-      description: 'Learn practical self-defense techniques from expert instructors. Build confidence, improve personal safety, and develop essential skills that last a lifetime!',
-      image: 'https://images.unsplash.com/photo-1544367567-0f2fcb009e0b?auto=format&fit=crop&q=80'
-    },
-    {
-      id: 'leadership-workshop',
-      title: 'Leadership Workshop',
-      description: 'Develop essential leadership skills through interactive sessions. Perfect for aspiring leaders and those looking to enhance their management capabilities.',
-      image: 'https://images.unsplash.com/photo-1552664730-d307ca884978?auto=format&fit=crop&q=80'
-    },
-    {
-      id: 'communication-skills',
-      title: 'Communication Skills',
-      description: 'Master the art of effective communication through practical exercises and expert guidance. Enhance your professional and personal relationships.',
-      image: 'https://images.unsplash.com/photo-1557425955-df376b5903c8?auto=format&fit=crop&q=80'
-    }
-  ]
-};
+type ActivityCategory = 'leadership' | 'team-building' | 'virtual' | 'experiences' | 'speaker';
 
 export default function Home() {
+  const [activities, setActivities] = useState<Record<ActivityCategory, Activity[]>>({
+    leadership: [],
+    'team-building': [],
+    virtual: [],
+    experiences: [],
+    speaker: []
+  });
+
   const {
     selectedActivities,
     showProposalModal,
@@ -113,7 +49,49 @@ export default function Home() {
     submitProposal
   } = useProposal();
 
-  const [activeTab, setActiveTab] = useState<ActivityCategory>('indoor');
+  const [activeTab, setActiveTab] = useState<ActivityCategory>('leadership');
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    async function fetchActivities() {
+      try {
+        const { data, error } = await supabase
+          .from('activities')
+          .select('*')
+          .eq('is_active', true);
+
+        if (error) {
+          throw error;
+        }
+
+        // Group activities by category
+        const groupedActivities = (data || []).reduce((acc: Record<ActivityCategory, Activity[]>, activity: Database['public']['Tables']['activities']['Row']) => {
+          if (!acc[activity.category]) {
+            acc[activity.category] = [];
+          }
+          acc[activity.category].push({
+            ...activity,
+            image: activity.image_url // Map image_url to image for UI compatibility
+          } as Activity);
+          return acc;
+        }, {
+          leadership: [],
+          'team-building': [],
+          virtual: [],
+          experiences: [],
+          speaker: []
+        });
+
+        setActivities(groupedActivities);
+      } catch (error) {
+        console.error('Error fetching activities:', error);
+      } finally {
+        setIsLoading(false);
+      }
+    }
+
+    fetchActivities();
+  }, []);
 
   return (
     <main className="bg-[#FDF8F7]">
@@ -166,68 +144,87 @@ export default function Home() {
               </div>
 
               {/* CTA Button */}
-                <Link
-                href="#reserve"
+                <button
+                onClick={openProposalModal}
                 className="inline-flex items-center px-8 py-4 rounded-full bg-[#FF4C39] text-white font-inter text-base hover:bg-[#FF4C39]/90 transition-all shadow-lg hover:-translate-y-0.5 transform"
                 >
                 Reserve Your Spot
                 <svg className="ml-2 w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
                 </svg>
-                </Link>
+                </button>
             </div>
 
             {/* Right Image */}
             <div className="relative">
               <div className="relative rounded-3xl overflow-hidden bg-[#FFE4E1] aspect-[4/3]">
                 <Image
-                  src="/womens-day-team.jpg"
+                  src="https://images.unsplash.com/photo-1573164713714-d95e436ab8d6?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2069&q=80"
                   alt="Women's Day Team Building Activities"
                   fill
                   className="object-cover"
                   priority
                 />
+                {/* Add a subtle gradient overlay */}
+                <div className="absolute inset-0 bg-gradient-to-tr from-[#FF4C39]/20 to-transparent"></div>
               </div>
+              {/* Add decorative elements */}
+              <div className="absolute -top-4 -right-4 w-24 h-24 bg-[#FFB473]/20 rounded-full blur-2xl"></div>
+              <div className="absolute -bottom-4 -left-4 w-32 h-32 bg-[#FF4C39]/10 rounded-full blur-2xl"></div>
             </div>
           </div>
         </div>
       </section>
 
       {/* Instructions Section */}
-      <section className="py-16 bg-white">
+      <section className="py-8 bg-white">
         <div className="container mx-auto px-4">
           <div className="max-w-4xl mx-auto">
-            <div className="bg-white rounded-2xl p-8 md:p-10 shadow-xl">
-              <h2 className="font-dm-sans text-3xl font-bold text-[#053257] mb-10 text-center">
-                How to Create Your Proposal
-              </h2>
-              
-              <div className="grid md:grid-cols-3 gap-8">
-                <div className="text-center space-y-4">
-                  <div className="w-14 h-14 bg-[#FFB47333] rounded-full flex items-center justify-center mx-auto text-[#FF4C39] text-2xl font-bold">1</div>
-                  <h3 className="font-dm-sans font-bold text-[#053257] text-lg">Select Activities</h3>
-                  <p className="text-[#053257CC] text-base font-inter">Choose the activities that interest your team by clicking on the cards below</p>
-                </div>
-                
-                <div className="text-center space-y-4">
-                  <div className="w-14 h-14 bg-[#FFB47333] rounded-full flex items-center justify-center mx-auto text-[#FF4C39] text-2xl font-bold">2</div>
-                  <h3 className="font-dm-sans font-bold text-[#053257] text-lg">Review Selection</h3>
-                  <p className="text-[#053257CC] text-base font-inter">Click the floating button to review your selected activities</p>
-                </div>
-                
-                <div className="text-center space-y-4">
-                  <div className="w-14 h-14 bg-[#FFB47333] rounded-full flex items-center justify-center mx-auto text-[#FF4C39] text-2xl font-bold">3</div>
-                  <h3 className="font-dm-sans font-bold text-[#053257] text-lg">Submit Details</h3>
-                  <p className="text-[#053257CC] text-base font-inter">Fill in your contact information and we&apos;ll get back to you</p>
+            <div className="group relative">
+              {/* Hover Trigger */}
+              <div className="text-center cursor-help">
+                <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-[#FFB47333] backdrop-blur-sm hover:bg-[#FFB47355] transition-all">
+                  <svg className="w-5 h-5 text-[#FF4C39]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3 0 1.4-1.278 2.575-3.006 2.907-.542.104-.994.54-.994 1.093m0 3h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                  </svg>
+                  <span className="text-[#FF4C39] font-inter text-base">How to make a proposal?</span>
                 </div>
               </div>
+
+              {/* Hidden Content that appears on hover */}
+              <div className="opacity-0 group-hover:opacity-100 invisible group-hover:visible transform group-hover:translate-y-0 translate-y-2 transition-all duration-300 ease-in-out absolute left-0 right-0 z-10 mt-2">
+                <div className="bg-white rounded-2xl p-8 shadow-xl border border-[#FFB47333]">
+                  <div className="grid md:grid-cols-3 gap-8">
+                    <div className="text-center space-y-3">
+                      <div className="w-12 h-12 bg-[#FFB47333] rounded-full flex items-center justify-center mx-auto text-[#FF4C39] text-xl font-bold">1</div>
+                      <h3 className="font-dm-sans font-bold text-[#053257] text-lg">Select Activities</h3>
+                      <p className="text-[#053257CC] text-sm font-inter">Choose activities that interest your team from our curated selection</p>
+                    </div>
+                    
+                    <div className="text-center space-y-3">
+                      <div className="w-12 h-12 bg-[#FFB47333] rounded-full flex items-center justify-center mx-auto text-[#FF4C39] text-xl font-bold">2</div>
+                      <h3 className="font-dm-sans font-bold text-[#053257] text-lg">Review Selection</h3>
+                      <p className="text-[#053257CC] text-sm font-inter">Check your selected activities in the floating review button</p>
+                    </div>
+                    
+                    <div className="text-center space-y-3">
+                      <div className="w-12 h-12 bg-[#FFB47333] rounded-full flex items-center justify-center mx-auto text-[#FF4C39] text-xl font-bold">3</div>
+                      <h3 className="font-dm-sans font-bold text-[#053257] text-lg">Submit Details</h3>
+                      <p className="text-[#053257CC] text-sm font-inter">Fill in your information and we'll get back to you promptly</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              {/* Placeholder space */}
+              <div className="h-4"></div>
             </div>
           </div>
         </div>
       </section>
 
       {/* Activities Section */}
-      <section className="py-20 bg-white">
+      <section id="activities" className="py-20 bg-white">
         <div className="container mx-auto px-4">
           <div className="max-w-7xl mx-auto">
             {/* Section Header */}
@@ -241,44 +238,44 @@ export default function Home() {
             </div>
 
             {/* Activity Type Tabs */}
-            <div className="max-w-3xl mx-auto mb-12">
+            <div className="max-w-4xl mx-auto mb-12">
               <div className="bg-white/80 backdrop-blur-sm p-3 rounded-2xl shadow-lg">
-                <div className="grid grid-cols-4 gap-2">
+                <div className="grid grid-cols-5 gap-2">
                   <button 
-                    onClick={() => setActiveTab('indoor')}
+                    onClick={() => setActiveTab('leadership')}
                     className={`relative py-4 px-3 rounded-xl font-dm-sans font-medium text-sm md:text-base transition-all duration-300 ${
-                      activeTab === 'indoor'
+                      activeTab === 'leadership'
                         ? 'bg-[#FFB47333] text-[#053257] shadow-sm'
                         : 'bg-white text-[#053257]/70 hover:bg-[#FFB47333]/50'
                     }`}
                   >
                     <div className="flex flex-col items-center gap-2">
-                      <svg className={`w-5 h-5 ${activeTab === 'indoor' ? 'text-[#FF4C39]' : 'text-[#053257]/50'}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
+                      <svg className={`w-5 h-5 ${activeTab === 'leadership' ? 'text-[#FF4C39]' : 'text-[#053257]/50'}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
                       </svg>
-                      <span>Indoor</span>
+                      <span>Leadership</span>
                     </div>
                     <span className={`absolute bottom-0 left-1/2 -translate-x-1/2 w-12 h-0.5 bg-[#FF4C39] transform transition-transform duration-300 ${
-                      activeTab === 'indoor' ? 'scale-x-100' : 'scale-x-0'
+                      activeTab === 'leadership' ? 'scale-x-100' : 'scale-x-0'
                     }`}></span>
                   </button>
 
                   <button 
-                    onClick={() => setActiveTab('outdoor')}
+                    onClick={() => setActiveTab('team-building')}
                     className={`relative py-4 px-3 rounded-xl font-dm-sans font-medium text-sm md:text-base transition-all duration-300 ${
-                      activeTab === 'outdoor'
+                      activeTab === 'team-building'
                         ? 'bg-[#FFB47333] text-[#053257] shadow-sm'
                         : 'bg-white text-[#053257]/70 hover:bg-[#FFB47333]/50'
                     }`}
                   >
                     <div className="flex flex-col items-center gap-2">
-                      <svg className={`w-5 h-5 ${activeTab === 'outdoor' ? 'text-[#FF4C39]' : 'text-[#053257]/50'}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z" />
+                      <svg className={`w-5 h-5 ${activeTab === 'team-building' ? 'text-[#FF4C39]' : 'text-[#053257]/50'}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
                       </svg>
-                      <span>Outdoor</span>
+                      <span>Team Building</span>
                     </div>
                     <span className={`absolute bottom-0 left-1/2 -translate-x-1/2 w-12 h-0.5 bg-[#FF4C39] transform transition-transform duration-300 ${
-                      activeTab === 'outdoor' ? 'scale-x-100' : 'scale-x-0'
+                      activeTab === 'team-building' ? 'scale-x-100' : 'scale-x-0'
                     }`}></span>
                   </button>
 
@@ -292,7 +289,7 @@ export default function Home() {
                   >
                     <div className="flex flex-col items-center gap-2">
                       <svg className={`w-5 h-5 ${activeTab === 'virtual' ? 'text-[#FF4C39]' : 'text-[#053257]/50'}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2z" />
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z" />
                       </svg>
                       <span>Virtual</span>
                     </div>
@@ -302,21 +299,40 @@ export default function Home() {
                   </button>
 
                   <button 
-                    onClick={() => setActiveTab('workshops')}
+                    onClick={() => setActiveTab('experiences')}
                     className={`relative py-4 px-3 rounded-xl font-dm-sans font-medium text-sm md:text-base transition-all duration-300 ${
-                      activeTab === 'workshops'
+                      activeTab === 'experiences'
                         ? 'bg-[#FFB47333] text-[#053257] shadow-sm'
                         : 'bg-white text-[#053257]/70 hover:bg-[#FFB47333]/50'
                     }`}
                   >
                     <div className="flex flex-col items-center gap-2">
-                      <svg className={`w-5 h-5 ${activeTab === 'workshops' ? 'text-[#FF4C39]' : 'text-[#053257]/50'}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10" />
+                      <svg className={`w-5 h-5 ${activeTab === 'experiences' ? 'text-[#FF4C39]' : 'text-[#053257]/50'}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14.828 14.828a4 4 0 01-5.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
                       </svg>
-                      <span>Workshops</span>
+                      <span>Experiences</span>
                     </div>
                     <span className={`absolute bottom-0 left-1/2 -translate-x-1/2 w-12 h-0.5 bg-[#FF4C39] transform transition-transform duration-300 ${
-                      activeTab === 'workshops' ? 'scale-x-100' : 'scale-x-0'
+                      activeTab === 'experiences' ? 'scale-x-100' : 'scale-x-0'
+                    }`}></span>
+                  </button>
+
+                  <button 
+                    onClick={() => setActiveTab('speaker')}
+                    className={`relative py-4 px-3 rounded-xl font-dm-sans font-medium text-sm md:text-base transition-all duration-300 ${
+                      activeTab === 'speaker'
+                        ? 'bg-[#FFB47333] text-[#053257] shadow-sm'
+                        : 'bg-white text-[#053257]/70 hover:bg-[#FFB47333]/50'
+                    }`}
+                  >
+                    <div className="flex flex-col items-center gap-2">
+                      <svg className={`w-5 h-5 ${activeTab === 'speaker' ? 'text-[#FF4C39]' : 'text-[#053257]/50'}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 11a7 7 0 01-7 7m0 0a7 7 0 01-7-7m7 7v4m0 0H8m4 0h4m-4-8a3 3 0 01-3-3V5a3 3 0 116 0v6a3 3 0 01-3 3z" />
+                      </svg>
+                      <span>Speaker</span>
+                    </div>
+                    <span className={`absolute bottom-0 left-1/2 -translate-x-1/2 w-12 h-0.5 bg-[#FF4C39] transform transition-transform duration-300 ${
+                      activeTab === 'speaker' ? 'scale-x-100' : 'scale-x-0'
                     }`}></span>
                   </button>
                 </div>
@@ -324,7 +340,19 @@ export default function Home() {
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-              {activities[activeTab].map((activity) => (
+              {isLoading ? (
+                // Loading skeleton
+                Array.from({ length: 3 }).map((_, index) => (
+                  <div key={index} className="animate-pulse">
+                    <div className="bg-gray-200 h-64 rounded-t-3xl"></div>
+                    <div className="p-6 bg-white rounded-b-3xl">
+                      <div className="h-6 bg-gray-200 rounded w-3/4 mb-4"></div>
+                      <div className="h-4 bg-gray-200 rounded w-full mb-2"></div>
+                      <div className="h-4 bg-gray-200 rounded w-5/6"></div>
+                    </div>
+                  </div>
+                ))
+              ) : activities[activeTab]?.map((activity) => (
                 <div 
                   key={activity.id}
                   className={`group relative rounded-3xl overflow-hidden bg-white shadow-lg hover:shadow-xl transition-all duration-300 ${
@@ -334,7 +362,7 @@ export default function Home() {
                 >
                   {/* Image Container */}
                   <div className="relative h-64 overflow-hidden">
-              <Image
+                    <Image
                       src={activity.image}
                       alt={activity.title}
                       fill
@@ -531,7 +559,7 @@ export default function Home() {
       </section>
 
       {/* Trust Indicators */}
-      <section className="py-16 lg:py-20 bg-gradient-to-br from-primary-light/5 via-white to-secondary-light">
+      <section id="why-us" className="py-16 lg:py-20 bg-gradient-to-br from-primary-light/5 via-white to-secondary-light">
         <div className="container mx-auto px-4">
           <div className="max-w-4xl mx-auto">
             <div className="text-center mb-12">
@@ -590,21 +618,21 @@ export default function Home() {
               </p>
 
               <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
-                <Link
-                  href="#reserve"
+                <button
+                  onClick={openProposalModal}
                   className="inline-flex items-center px-8 py-4 rounded-full bg-primary text-white font-medium hover:bg-primary/90 transition-all duration-300 shadow-lg hover:shadow-xl hover:-translate-y-0.5 transform group"
                 >
                   Register Now
                   <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 ml-2 group-hover:translate-x-1 transition-transform" viewBox="0 0 20 20" fill="currentColor">
                     <path fillRule="evenodd" d="M10.293 3.293a1 1 0 011.414 0l6 6a1 1 0 010 1.414l-6 6a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-4.293-4.293a1 1 0 010-1.414z" clipRule="evenodd" />
                   </svg>
-                </Link>
-          <Link
-                  href="#featured-activities"
+                </button>
+                <Link
+                  href="#activities"
                   className="inline-flex items-center px-8 py-4 rounded-full border-2 border-primary text-primary font-medium hover:bg-primary/5 transition-all duration-300"
-          >
+                >
                   View Activities
-          </Link>
+                </Link>
               </div>
             </div>
           </div>

@@ -131,8 +131,9 @@ export default function ContactPage() {
                   </div>
                   <div>
                     <h3 className="font-bold text-secondary mb-1">Our Location</h3>
-                    <p className="text-secondary/70">123 Business Street</p>
-                    <p className="text-secondary/70">City, State 12345</p>
+                    <p className="text-secondary/70">#10, 5th B Cross,</p>
+                    <p className="text-secondary/70">Shardamba Nagar, Jalahalli,</p>
+                    <p className="text-secondary/70">Bangalore, 560013, India</p>
                   </div>
                 </div>
 
@@ -144,7 +145,7 @@ export default function ContactPage() {
                   </div>
                   <div>
                     <h3 className="font-bold text-secondary mb-1">Email Us</h3>
-                    <p className="text-secondary/70">contact@trebound.com</p>
+                    <p className="text-secondary/70">connect@trebound.com</p>
                   </div>
                 </div>
 
@@ -156,7 +157,7 @@ export default function ContactPage() {
                   </div>
                   <div>
                     <h3 className="font-bold text-secondary mb-1">Call Us</h3>
-                    <p className="text-secondary/70">(555) 123-4567</p>
+                    <p className="text-secondary/70">+91 8095204666</p>
                   </div>
                 </div>
               </div>
@@ -165,9 +166,18 @@ export default function ContactPage() {
               <div className="mt-12">
                 <h3 className="font-bold text-secondary mb-4">Business Hours</h3>
                 <div className="space-y-2 text-secondary/70">
-                  <p>Monday - Friday: 9:00 AM - 6:00 PM</p>
-                  <p>Saturday: 10:00 AM - 4:00 PM</p>
-                  <p>Sunday: Closed</p>
+                  <div className="flex justify-between items-center">
+                    <span className="font-medium">Monday - Friday</span>
+                    <span>8:30 AM - 8:30 PM</span>
+                  </div>
+                  <div className="flex justify-between items-center">
+                    <span className="font-medium">Saturday</span>
+                    <span>8:30 AM - 8:30 PM</span>
+                  </div>
+                  <div className="flex justify-between items-center">
+                    <span className="font-medium">Sunday</span>
+                    <span className="text-primary">Closed</span>
+                  </div>
                 </div>
               </div>
             </div>
