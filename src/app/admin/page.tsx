@@ -35,6 +35,7 @@ export default function AdminPage() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [showAddModal, setShowAddModal] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
+  const [showInactive, setShowInactive] = useState(false);
   const [activities, setActivities] = useState<Record<ActivityCategory, Activity[]>>({
     leadership: [],
     'team-building': [],
@@ -85,30 +86,32 @@ export default function AdminPage() {
 
   const fetchActivities = async () => {
     try {
+      // Remove the is_active filter to get all activities
       const { data, error } = await supabase
         .from('activities')
-        .select('*')
-        .eq('is_active', true);
+        .select('*');
 
       if (error) {
         throw error;
       }
 
-      // Group activities by category
-      const groupedActivities = (data || []).reduce((acc: Record<ActivityCategory, Activity[]>, activity) => {
-        const category = activity.category as ActivityCategory;
-        if (!acc[category]) {
-          acc[category] = [];
-        }
-        acc[category].push(activity as Activity);
-        return acc;
-      }, {
-        leadership: [],
-        'team-building': [],
-        virtual: [],
-        experiences: [],
-        speaker: []
-      });
+      // Group activities by category, filtering based on showInactive state
+      const groupedActivities = (data || [])
+        .filter(activity => showInactive ? true : activity.is_active)
+        .reduce((acc: Record<ActivityCategory, Activity[]>, activity) => {
+          const category = activity.category as ActivityCategory;
+          if (!acc[category]) {
+            acc[category] = [];
+          }
+          acc[category].push(activity as Activity);
+          return acc;
+        }, {
+          leadership: [],
+          'team-building': [],
+          virtual: [],
+          experiences: [],
+          speaker: []
+        });
 
       setActivities(groupedActivities);
     } catch (error) {
@@ -118,6 +121,13 @@ export default function AdminPage() {
       setIsLoading(false);
     }
   };
+
+  // Add effect to refetch when showInactive changes
+  useEffect(() => {
+    if (isLoggedIn) {
+      fetchActivities();
+    }
+  }, [isLoggedIn, showInactive]);
 
   const handleDeleteActivity = async (id: string) => {
     if (!window.confirm('Are you sure you want to delete this activity?')) return;
@@ -366,12 +376,29 @@ export default function AdminPage() {
       <div className="max-w-7xl mx-auto">
         <div className="flex justify-between items-center mb-8">
           <h1 className="text-2xl font-bold text-[#053257]">Activity Management</h1>
-          <button
-            onClick={() => setShowAddModal(true)}
-            className="bg-[#FF4C39] text-white px-4 py-2 rounded-xl hover:bg-[#FF4C39]/90 transition-colors"
-          >
-            Add New Activity
-          </button>
+          <div className="flex items-center gap-4">
+            {/* Add Filter Toggle */}
+            <div className="flex items-center gap-2">
+              <label className="relative inline-flex items-center cursor-pointer">
+                <input
+                  type="checkbox"
+                  className="sr-only peer"
+                  checked={showInactive}
+                  onChange={(e) => setShowInactive(e.target.checked)}
+                />
+                <div className="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-[#FF4C39]/20 rounded-full peer peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-[#FF4C39]"></div>
+                <span className="ml-2 text-sm font-medium text-[#053257]">
+                  Show Inactive
+                </span>
+              </label>
+            </div>
+            <button
+              onClick={() => setShowAddModal(true)}
+              className="bg-[#FF4C39] text-white px-4 py-2 rounded-xl hover:bg-[#FF4C39]/90 transition-colors"
+            >
+              Add New Activity
+            </button>
+          </div>
         </div>
 
         {/* Activities List */}
@@ -384,7 +411,9 @@ export default function AdminPage() {
               {categoryActivities.map((activity) => (
                 <div
                   key={activity.id}
-                  className="bg-white rounded-xl p-6 shadow-lg hover:shadow-xl transition-shadow"
+                  className={`bg-white rounded-xl p-6 shadow-lg hover:shadow-xl transition-shadow ${
+                    !activity.is_active ? 'opacity-60' : ''
+                  }`}
                 >
                   <div className="flex items-start gap-6">
                     {/* Image */}
