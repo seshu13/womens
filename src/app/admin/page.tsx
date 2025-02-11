@@ -76,7 +76,7 @@ export default function AdminPage() {
         duration: editingActivity.duration || '',
         group_size_min: editingActivity.group_size_min?.toString() || '',
         group_size_max: editingActivity.group_size_max?.toString() || '',
-        highlights: editingActivity.highlights ? JSON.stringify(editingActivity.highlights) : '',
+        highlights: editingActivity.highlights ? editingActivity.highlights.join(', ') : '',
         video_url: editingActivity.video_url || ''
       });
     } else {
@@ -323,7 +323,7 @@ export default function AdminPage() {
         duration: formData.duration || null,
         group_size_min: formData.group_size_min ? parseInt(formData.group_size_min) : null,
         group_size_max: formData.group_size_max ? parseInt(formData.group_size_max) : null,
-        highlights: formData.highlights ? JSON.parse(formData.highlights) : [],
+        highlights: formData.highlights ? formData.highlights.split(',').map(item => item.trim()).filter(item => item !== '') : [],
         video_url: formData.video_url || null
       };
 
@@ -684,15 +684,20 @@ export default function AdminPage() {
 
                 <div>
                   <label htmlFor="highlights" className="block text-sm font-medium text-[#053257] mb-1">
-                    Highlights (Optional, JSON array)
+                    Highlights (Optional)
                   </label>
+                  <div className="mb-2">
+                    <span className="text-xs text-[#053257CC]">
+                      Add multiple highlights separated by commas. For example: Professional art supplies included, Guided by experienced artists, Take home your masterpiece
+                    </span>
+                  </div>
                   <textarea
                     id="highlights"
                     name="highlights"
                     rows={3}
                     value={formData.highlights}
                     onChange={handleInputChange}
-                    placeholder='["Highlight 1", "Highlight 2", "Highlight 3"]'
+                    placeholder="Enter highlights separated by commas..."
                     className="w-full px-4 py-2 rounded-xl border border-gray-200 focus:outline-none focus:ring-2 focus:ring-[#FF4C39]/20 focus:border-[#FF4C39]"
                   ></textarea>
                 </div>
