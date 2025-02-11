@@ -22,9 +22,56 @@ const config: NextConfig = {
       {
         protocol: 'https',
         hostname: 'www.youtube.com'
+      },
+      {
+        protocol: 'https',
+        hostname: 'i.ibb.co'
       }
     ],
   },
+  // SEO Configuration
+  async headers() {
+    return [
+      {
+        source: '/:path*',
+        headers: [
+          {
+            key: 'X-DNS-Prefetch-Control',
+            value: 'on'
+          },
+          {
+            key: 'X-XSS-Protection',
+            value: '1; mode=block'
+          },
+          {
+            key: 'X-Frame-Options',
+            value: 'SAMEORIGIN'
+          },
+          {
+            key: 'X-Content-Type-Options',
+            value: 'nosniff'
+          }
+        ]
+      }
+    ]
+  },
+  // Meta Configuration
+  async rewrites() {
+    return {
+      beforeFiles: [
+        {
+          source: '/robots.txt',
+          destination: '/api/robots'
+        },
+        {
+          source: '/sitemap.xml',
+          destination: '/api/sitemap'
+        }
+      ],
+      afterFiles: [],
+      fallback: []
+    }
+  }
 }
 
 export default config
