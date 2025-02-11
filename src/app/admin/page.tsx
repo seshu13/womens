@@ -16,6 +16,11 @@ interface Activity {
   badge?: string;
   is_active: boolean;
   created_at: string;
+  duration?: string;
+  group_size_min?: number;
+  group_size_max?: number;
+  highlights?: string[];
+  video_url?: string;
 }
 
 interface FormDataState {
@@ -23,6 +28,11 @@ interface FormDataState {
   description: string;
   category: ActivityCategory;
   badge: string;
+  duration: string;
+  group_size_min: string;
+  group_size_max: string;
+  highlights: string;
+  video_url: string;
 }
 
 // Create Supabase client
@@ -49,6 +59,11 @@ export default function AdminPage() {
     description: '',
     category: 'leadership',
     badge: '',
+    duration: '',
+    group_size_min: '',
+    group_size_max: '',
+    highlights: '',
+    video_url: ''
   });
 
   useEffect(() => {
@@ -58,6 +73,11 @@ export default function AdminPage() {
         description: editingActivity.description || '',
         category: editingActivity.category || 'leadership',
         badge: editingActivity.badge || '',
+        duration: editingActivity.duration || '',
+        group_size_min: editingActivity.group_size_min?.toString() || '',
+        group_size_max: editingActivity.group_size_max?.toString() || '',
+        highlights: editingActivity.highlights ? JSON.stringify(editingActivity.highlights) : '',
+        video_url: editingActivity.video_url || ''
       });
     } else {
       setFormData({
@@ -65,6 +85,11 @@ export default function AdminPage() {
         description: '',
         category: 'leadership',
         badge: '',
+        duration: '',
+        group_size_min: '',
+        group_size_max: '',
+        highlights: '',
+        video_url: ''
       });
     }
   }, [editingActivity]);
@@ -294,7 +319,12 @@ export default function AdminPage() {
         category: formData.category,
         badge: formData.badge || null,
         image_url: imageUrl,
-        is_active: true
+        is_active: true,
+        duration: formData.duration || null,
+        group_size_min: formData.group_size_min ? parseInt(formData.group_size_min) : null,
+        group_size_max: formData.group_size_max ? parseInt(formData.group_size_max) : null,
+        highlights: formData.highlights ? JSON.parse(formData.highlights) : [],
+        video_url: formData.video_url || null
       };
 
       let error;
@@ -601,6 +631,83 @@ export default function AdminPage() {
                     id="image"
                     name="image"
                     accept="image/*"
+                    className="w-full px-4 py-2 rounded-xl border border-gray-200 focus:outline-none focus:ring-2 focus:ring-[#FF4C39]/20 focus:border-[#FF4C39]"
+                  />
+                </div>
+
+                <div>
+                  <label htmlFor="duration" className="block text-sm font-medium text-[#053257] mb-1">
+                    Duration (Optional)
+                  </label>
+                  <input
+                    type="text"
+                    id="duration"
+                    name="duration"
+                    value={formData.duration}
+                    onChange={handleInputChange}
+                    placeholder="e.g. 2-2.5 hrs"
+                    className="w-full px-4 py-2 rounded-xl border border-gray-200 focus:outline-none focus:ring-2 focus:ring-[#FF4C39]/20 focus:border-[#FF4C39]"
+                  />
+                </div>
+
+                <div className="grid grid-cols-2 gap-4">
+                  <div>
+                    <label htmlFor="group_size_min" className="block text-sm font-medium text-[#053257] mb-1">
+                      Min Group Size (Optional)
+                    </label>
+                    <input
+                      type="number"
+                      id="group_size_min"
+                      name="group_size_min"
+                      value={formData.group_size_min}
+                      onChange={handleInputChange}
+                      min="0"
+                      className="w-full px-4 py-2 rounded-xl border border-gray-200 focus:outline-none focus:ring-2 focus:ring-[#FF4C39]/20 focus:border-[#FF4C39]"
+                    />
+                  </div>
+
+                  <div>
+                    <label htmlFor="group_size_max" className="block text-sm font-medium text-[#053257] mb-1">
+                      Max Group Size (Optional)
+                    </label>
+                    <input
+                      type="number"
+                      id="group_size_max"
+                      name="group_size_max"
+                      value={formData.group_size_max}
+                      onChange={handleInputChange}
+                      min="0"
+                      className="w-full px-4 py-2 rounded-xl border border-gray-200 focus:outline-none focus:ring-2 focus:ring-[#FF4C39]/20 focus:border-[#FF4C39]"
+                    />
+                  </div>
+                </div>
+
+                <div>
+                  <label htmlFor="highlights" className="block text-sm font-medium text-[#053257] mb-1">
+                    Highlights (Optional, JSON array)
+                  </label>
+                  <textarea
+                    id="highlights"
+                    name="highlights"
+                    rows={3}
+                    value={formData.highlights}
+                    onChange={handleInputChange}
+                    placeholder='["Highlight 1", "Highlight 2", "Highlight 3"]'
+                    className="w-full px-4 py-2 rounded-xl border border-gray-200 focus:outline-none focus:ring-2 focus:ring-[#FF4C39]/20 focus:border-[#FF4C39]"
+                  ></textarea>
+                </div>
+
+                <div>
+                  <label htmlFor="video_url" className="block text-sm font-medium text-[#053257] mb-1">
+                    Video URL (Optional)
+                  </label>
+                  <input
+                    type="url"
+                    id="video_url"
+                    name="video_url"
+                    value={formData.video_url}
+                    onChange={handleInputChange}
+                    placeholder="e.g. https://youtube.com/watch?v=..."
                     className="w-full px-4 py-2 rounded-xl border border-gray-200 focus:outline-none focus:ring-2 focus:ring-[#FF4C39]/20 focus:border-[#FF4C39]"
                   />
                 </div>
