@@ -26,6 +26,26 @@ const config: NextConfig = {
       {
         protocol: 'https',
         hostname: 'i.ibb.co'
+      },
+      {
+        protocol: 'https',
+        hostname: 'cdn.prod.website-files.com'
+      },
+      {
+        protocol: 'https',
+        hostname: '**.website-files.com'
+      },
+      {
+        protocol: 'https',
+        hostname: '**.cloudfront.net'
+      },
+      {
+        protocol: 'https',
+        hostname: '**.amazonaws.com'
+      },
+      {
+        protocol: 'https',
+        hostname: 'res.cloudinary.com'
       }
     ],
   },
