@@ -23,11 +23,16 @@ interface Activity {
   title: string;
   description: string;
   image_url: string;
+  video_url?: string;
   image: string; // For UI compatibility
   category: ActivityCategory;
   badge?: string;
   is_active: boolean;
   created_at: string;
+  duration?: string;
+  group_size_min?: number;
+  group_size_max?: number;
+  highlights?: string[];
 }
 
 type ActivityCategory = 'leadership' | 'team-building' | 'virtual' | 'experiences' | 'speaker';
@@ -76,7 +81,11 @@ export default function Home() {
           }
           acc[activity.category].push({
             ...activity,
-            image: activity.image_url // Map image_url to image for UI compatibility
+            image: activity.image_url, // Map image_url to image for UI compatibility
+            duration: activity.duration,
+            group_size_min: activity.group_size_min,
+            group_size_max: activity.group_size_max,
+            highlights: activity.highlights as string[] || []
           } as Activity);
           return acc;
         }, {
@@ -395,28 +404,28 @@ export default function Home() {
                         {activity.title}
                       </h3>
                       {activity.badge && (
-                        <span className="inline-flex items-center px-3 py-1 rounded-full bg-[#FF4C39] text-white text-sm font-medium mt-2">
+                        <span className="inline-flex items-center px-3 py-1 rounded-full bg-[#FFB47333] text-[#FF4C39] text-xs font-medium mt-2 backdrop-blur-sm transition-colors group-hover:bg-[#FFB47344]">
                           {activity.badge}
                         </span>
                       )}
                     </div>
 
                     {/* Description */}
-                    <p className="text-[#053257CC] font-inter mb-4">
+                    <p className="text-[#053257CC] font-inter mb-4 line-clamp-2 text-sm leading-relaxed group-hover:text-[#053257]/80 transition-colors">
                       {activity.description}
                     </p>
 
                     {/* Action Buttons */}
-                    <div className="flex items-center justify-between">
+                    <div className="flex items-center justify-between mt-auto">
                       <button
                         onClick={(e) => {
                           e.stopPropagation();
                           setSelectedDetailActivity(activity);
                         }}
-                        className="text-[#FF4C39] hover:text-[#FF4C39]/80 font-medium text-sm flex items-center gap-1"
+                        className="text-[#FF4C39] hover:text-[#FF4C39]/80 font-medium text-sm flex items-center gap-1 group/btn"
                       >
                         View Details
-                        <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <svg className="w-4 h-4 transform transition-transform group-hover/btn:translate-x-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
                         </svg>
                       </button>
@@ -454,23 +463,7 @@ export default function Home() {
         onSelect={toggleActivity}
         isSelected={selectedDetailActivity ? selectedActivities.includes(selectedDetailActivity.title) : false}
         activity={selectedDetailActivity ? {
-          id: selectedDetailActivity.id,
-          title: selectedDetailActivity.title,
-          description: selectedDetailActivity.description,
-          image_url: selectedDetailActivity.image_url,
-          category: selectedDetailActivity.category,
-          badge: selectedDetailActivity.badge,
-          duration: "1-2 hours",
-          group_size_min: 5,
-          group_size_max: 20,
-          highlights: [
-            "Interactive and engaging sessions",
-            "Professional facilitators",
-            "All materials included",
-            "Customizable to your team's needs"
-          ],
-          is_active: selectedDetailActivity.is_active,
-          created_at: selectedDetailActivity.created_at
+          ...selectedDetailActivity
         } : undefined}
       />
 
