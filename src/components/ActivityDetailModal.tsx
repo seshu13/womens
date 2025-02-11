@@ -133,7 +133,7 @@ export default function ActivityDetailModal({
               leaveFrom="opacity-100 scale-100"
               leaveTo="opacity-0 scale-95"
             >
-              <Dialog.Panel className="w-full max-w-3xl transform overflow-hidden rounded-2xl bg-white shadow-xl transition-all">
+              <Dialog.Panel className="w-full max-w-3xl transform overflow-hidden rounded-2xl bg-white shadow-xl transition-all mx-4">
                 {/* Loading overlay */}
                 {loading && (
                   <div className="absolute inset-0 bg-white/80 backdrop-blur-sm z-10 flex items-center justify-center">
@@ -142,7 +142,7 @@ export default function ActivityDetailModal({
                 )}
 
                 {/* Image/Video Section */}
-                <div className="relative h-[400px] w-full overflow-hidden">
+                <div className="relative h-[250px] sm:h-[300px] md:h-[400px] w-full overflow-hidden">
                   <Image
                     src={activity.image_url}
                     alt={activity.title}
@@ -164,10 +164,10 @@ export default function ActivityDetailModal({
                 </div>
 
                 {/* Content Section */}
-                <div className="p-6">
-                  <div className="flex items-start justify-between">
+                <div className="p-4 sm:p-6">
+                  <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-4">
                     <div>
-                      <Dialog.Title className="text-2xl font-bold text-[#053257] font-dm-sans">
+                      <Dialog.Title className="text-xl sm:text-2xl font-bold text-[#053257] font-dm-sans">
                         {activity.title}
                       </Dialog.Title>
                       {activity.badge && (
@@ -180,7 +180,7 @@ export default function ActivityDetailModal({
                     {/* Select Activity Button */}
                     <button
                       onClick={() => onSelect(activity.title)}
-                      className={`flex items-center gap-2 px-6 py-3 rounded-xl font-medium shadow-lg hover:shadow-xl transition-all transform hover:-translate-y-0.5 ${
+                      className={`w-full sm:w-auto flex items-center justify-center gap-2 px-6 py-3 rounded-xl font-medium shadow-lg hover:shadow-xl transition-all transform hover:-translate-y-0.5 ${
                         isSelected
                           ? 'bg-[#FF4C39] text-white hover:bg-[#FF4C39]/90'
                           : 'bg-[#FF4C39] text-white hover:bg-[#FF4C39]/90'
@@ -204,23 +204,41 @@ export default function ActivityDetailModal({
                     </button>
                   </div>
 
-                  <p className="mt-4 text-[#053257CC] font-inter">
+                  <p className="mt-4 text-[#053257CC] font-inter text-sm sm:text-base">
                     {activity.description}
                   </p>
 
                   {/* Activity Details */}
                   {(activity.duration || activity.group_size_min) && (
-                    <div className="mt-6 grid grid-cols-2 gap-4">
+                    <div className="mt-6 grid grid-cols-1 sm:grid-cols-2 gap-4">
                       {activity.duration && (
                         <div className="bg-[#FFB47333] rounded-xl p-4">
-                          <h4 className="font-dm-sans font-bold text-[#053257]">Duration</h4>
-                          <p className="text-[#053257CC]">{activity.duration}</p>
+                          <div className="flex items-center gap-3">
+                            <div className="w-10 h-10 rounded-lg bg-white/80 flex items-center justify-center flex-shrink-0">
+                              <svg className="w-5 h-5 text-[#FF4C39]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+                              </svg>
+                            </div>
+                            <div>
+                              <h4 className="font-dm-sans font-bold text-[#053257] text-sm sm:text-base">Duration</h4>
+                              <p className="text-[#053257CC] text-sm">{activity.duration}</p>
+                            </div>
+                          </div>
                         </div>
                       )}
                       {activity.group_size_min && (
                         <div className="bg-[#FFB47333] rounded-xl p-4">
-                          <h4 className="font-dm-sans font-bold text-[#053257]">Group Size</h4>
-                          <p className="text-[#053257CC]">{activity.group_size_min}-{activity.group_size_max} participants</p>
+                          <div className="flex items-center gap-3">
+                            <div className="w-10 h-10 rounded-lg bg-white/80 flex items-center justify-center flex-shrink-0">
+                              <svg className="w-5 h-5 text-[#FF4C39]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
+                              </svg>
+                            </div>
+                            <div>
+                              <h4 className="font-dm-sans font-bold text-[#053257] text-sm sm:text-base">Group Size</h4>
+                              <p className="text-[#053257CC] text-sm">{activity.group_size_min}-{activity.group_size_max} participants</p>
+                            </div>
+                          </div>
                         </div>
                       )}
                     </div>
@@ -229,14 +247,14 @@ export default function ActivityDetailModal({
                   {/* Key takeaways */}
                   {activity.highlights && activity.highlights.length > 0 && (
                     <div className="mt-6">
-                      <h4 className="font-dm-sans font-bold text-[#053257] mb-3">Key takeaways</h4>
+                      <h4 className="font-dm-sans font-bold text-[#053257] mb-3 text-sm sm:text-base">Key takeaways</h4>
                       <ul className="space-y-2">
                         {activity.highlights.map((highlight, index) => (
-                          <li key={index} className="flex items-center text-[#053257CC]">
-                            <svg className="w-5 h-5 text-[#FF4C39] mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <li key={index} className="flex items-center text-[#053257CC] text-sm">
+                            <svg className="w-5 h-5 text-[#FF4C39] mr-2 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
                             </svg>
-                            {highlight}
+                            <span>{highlight}</span>
                           </li>
                         ))}
                       </ul>

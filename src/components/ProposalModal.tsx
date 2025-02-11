@@ -3,7 +3,7 @@ import Image from 'next/image';
 interface FormData {
   name: string;
   email: string;
-  workEmail: string;
+  phone: string;
   company: string;
   numberOfParticipants: string;
   message?: string;
@@ -95,7 +95,7 @@ export default function ProposalModal({
               const data: FormData = {
                 name: formData.get('name') as string,
                 email: formData.get('email') as string,
-                workEmail: formData.get('workEmail') as string,
+                phone: formData.get('phone') as string,
                 company: formData.get('company') as string,
                 numberOfParticipants: formData.get('numberOfParticipants') as string,
                 message: formData.get('message') as string || undefined
@@ -120,7 +120,7 @@ export default function ProposalModal({
 
                 <div>
                   <label htmlFor="email" className="block text-sm font-medium text-[#053257] mb-1">
-                    Personal Email
+                    Work Email
                   </label>
                   <input
                     type="email"
@@ -129,22 +129,23 @@ export default function ProposalModal({
                     required
                     disabled={isSubmitting}
                     className="w-full px-4 py-2 rounded-xl border border-gray-200 focus:outline-none focus:ring-2 focus:ring-[#FF4C39]/20 focus:border-[#FF4C39] disabled:opacity-50 disabled:bg-gray-50"
-                    placeholder="jane@example.com"
+                    placeholder="jane@company.com"
                   />
                 </div>
 
                 <div>
-                  <label htmlFor="workEmail" className="block text-sm font-medium text-[#053257] mb-1">
-                    Work Email
+                  <label htmlFor="phone" className="block text-sm font-medium text-[#053257] mb-1">
+                    Mobile Number
                   </label>
                   <input
-                    type="email"
-                    id="workEmail"
-                    name="workEmail"
+                    type="tel"
+                    id="phone"
+                    name="phone"
                     required
                     disabled={isSubmitting}
+                    pattern="[0-9]{10}"
                     className="w-full px-4 py-2 rounded-xl border border-gray-200 focus:outline-none focus:ring-2 focus:ring-[#FF4C39]/20 focus:border-[#FF4C39] disabled:opacity-50 disabled:bg-gray-50"
-                    placeholder="jane@company.com"
+                    placeholder="Enter 10 digit mobile number"
                   />
                 </div>
 

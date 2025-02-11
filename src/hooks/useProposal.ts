@@ -16,7 +16,7 @@ const supabase = createClient<Database>(supabaseUrl, supabaseAnonKey);
 interface FormData {
   name: string;
   email: string;
-  workEmail: string;
+  phone: string;
   company: string;
   numberOfParticipants: string;
   message?: string;
@@ -56,7 +56,7 @@ export function useProposal() {
       const proposalData = {
         name: formData.name,
         email: formData.email,
-        phone: formData.workEmail, // Using workEmail as phone for now
+        phone: formData.phone,
         company_name: formData.company,
         preferred_date: new Date().toISOString(), // Default to current date
         number_of_participants: parseInt(formData.numberOfParticipants.split('-')[0]), // Take the lower bound

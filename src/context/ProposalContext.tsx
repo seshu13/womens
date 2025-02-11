@@ -6,7 +6,7 @@ import { useProposal } from '@/hooks/useProposal';
 interface FormData {
   name: string;
   email: string;
-  workEmail: string;
+  phone: string;
   company: string;
   numberOfParticipants: string;
   message?: string;

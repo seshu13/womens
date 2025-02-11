@@ -3,6 +3,7 @@
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { useProposalContext } from '@/context/ProposalContext';
+import Image from 'next/image';
 
 export default function TheHeader() {
   const pathname = usePathname();
@@ -16,9 +17,15 @@ export default function TheHeader() {
         <div className="flex items-center justify-between h-20">
           {/* Logo */}
           <Link href="/" className="flex items-center">
-            <span className="text-2xl font-dm-sans font-bold bg-gradient-to-r from-[#FF4C39] to-[#FFB473] text-transparent bg-clip-text">
-              trebound
-            </span>
+            <div className="relative w-32 h-10">
+              <Image
+                src="/66f54b982ce090736e4e4d1c_Tewbound Hover.png"
+                alt="Trebound Logo"
+                fill
+                className="object-contain"
+                priority
+              />
+            </div>
           </Link>
 
           {/* Navigation */}
