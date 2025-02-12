@@ -40,7 +40,7 @@ export default function ContactModal({ isOpen, closeModal }: ContactModalProps) 
     }
 
     try {
-      const { data, error } = await supabase
+      const { error } = await supabase
         .from('proposals')
         .insert([
           {

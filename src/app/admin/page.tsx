@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { createClient } from '@supabase/supabase-js';
 import { toast } from 'react-hot-toast';
 import Image from 'next/image';
@@ -109,16 +109,14 @@ export default function AdminPage() {
     }
   }, [isLoggedIn]);
 
-  const fetchActivities = async () => {
+  const fetchActivities = useCallback(async () => {
     try {
-      // Remove the is_active filter to get all activities
       const { data, error } = await supabase
         .from('activities')
-        .select('*');
+        .select('*')
+        .order('created_at', { ascending: false });
 
-      if (error) {
-        throw error;
-      }
+      if (error) throw error;
 
       // Group activities by category, filtering based on showInactive state
       const groupedActivities = (data || [])
@@ -145,7 +143,7 @@ export default function AdminPage() {
     } finally {
       setIsLoading(false);
     }
-  };
+  }, [showInactive]);
 
   // Add effect to refetch when showInactive changes
   useEffect(() => {

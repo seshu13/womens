@@ -6,6 +6,7 @@ import TheFooter from '@/components/TheFooter';
 import { Toaster } from 'react-hot-toast';
 import { ProposalProvider } from '@/context/ProposalContext';
 import Script from 'next/script';
+import Image from 'next/image';
 
 const inter = Inter({
   subsets: ['latin'],
@@ -153,12 +154,13 @@ export default function RootLayout({
 
         {/* Meta Pixel (noscript) */}
         <noscript>
-          <img 
-            height="1" 
-            width="1" 
-            style={{ display: 'none' }}
+          <Image
             src={`https://www.facebook.com/tr?id=${process.env.NEXT_PUBLIC_META_PIXEL_ID}&ev=PageView&noscript=1`}
-            alt=""
+            alt="Meta Pixel"
+            width={1}
+            height={1}
+            style={{ display: 'none' }}
+            unoptimized
           />
         </noscript>
       </body>
