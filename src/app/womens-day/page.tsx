@@ -633,7 +633,7 @@ export default function Home() {
           <div className="max-w-7xl mx-auto">
             <div className="text-center mb-16">
               <h2 className="font-dm-sans text-4xl font-bold text-[#053257] mb-6">
-                Why Choose Our Women's Day Program?
+                Why Choose Our Women&apos;s Day Program?
               </h2>
               <p className="text-[#053257]/80 text-lg max-w-2xl mx-auto">
                 Experience a thoughtfully curated celebration that empowers and inspires
