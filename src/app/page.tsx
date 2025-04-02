@@ -82,6 +82,24 @@ export default function Home() {
           <div className="absolute inset-0 bg-gradient-to-br from-[#053257]/5 via-white to-[#FFB473]/10"></div>
           <div className="container mx-auto px-4 relative">
             <div className="max-w-6xl mx-auto">
+              {/* Anniversary Banner */}
+              <div className="mb-8 flex justify-center">
+                <Link href="/ten-years-celebration" className="inline-block">
+                  <div className="bg-gradient-to-r from-[#053257] to-[#053257]/90 rounded-xl overflow-hidden transform transition-transform hover:scale-[1.02] shadow-lg">
+                    <div className="px-6 py-3 text-center flex items-center justify-center gap-3">
+                      <span className="relative flex h-3 w-3">
+                        <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#FF4C39] opacity-75"></span>
+                        <span className="relative inline-flex rounded-full h-3 w-3 bg-[#FF4C39]"></span>
+                      </span>
+                      <span className="text-white font-medium">Celebrating 10 Years of Excellence - Special Offers Inside!</span>
+                      <svg className="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                      </svg>
+                    </div>
+                  </div>
+                </Link>
+              </div>
+              
               <div className="text-center mb-16">
                 <h1 className="font-dm-sans text-5xl lg:text-6xl font-bold text-[#053257] mb-6">
                   Transformative Corporate

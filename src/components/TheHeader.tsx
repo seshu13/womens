@@ -44,6 +44,23 @@ export default function TheHeader() {
               </span>
             </Link>
             <Link 
+              href="/ten-years-celebration" 
+              className={`relative text-base font-medium transition-all group ${
+                isActive('/ten-years-celebration') 
+                  ? 'text-[#053257]' 
+                  : 'text-[#053257CC] hover:text-[#FF4C39]'
+              }`}
+            >
+              <span className="relative flex items-center">
+                <span className="relative flex h-2 w-2 mr-1">
+                  <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#FF4C39] opacity-75"></span>
+                  <span className="relative inline-flex rounded-full h-2 w-2 bg-[#FF4C39]"></span>
+                </span>
+                10 Years
+                <span className={`absolute left-0 -bottom-1 w-0 h-0.5 bg-[#FF4C39] transition-all group-hover:w-full ${isActive('/ten-years-celebration') ? 'w-full' : ''}`}></span>
+              </span>
+            </Link>
+            <Link 
               href={pathname === '/womens-day' ? '/womens-day#activities' : '/#activities'} 
               className={`relative text-base font-medium transition-all group ${
                 isActive('/activities') 

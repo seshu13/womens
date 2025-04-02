@@ -62,28 +62,42 @@ export function useProposal() {
         number_of_participants: parseInt(formData.numberOfParticipants.split('-')[0]), // Take the lower bound
         selected_activities: selectedActivities,
         message: formData.message,
-        status: 'pending'
+        status: 'pending',
+        source: window.location.pathname, // Track which page the submission came from
       };
 
-      // Insert into Supabase
-      const { error } = await supabase
-        .from('proposals')
-        .insert([proposalData])
-        .select();  // Add select to get better error details
-
-      if (error) {
-        console.error('Supabase error:', error);
-        if (error.code === 'PGRST301') {
-          throw new Error('Permission denied. Please try again later.');
-        } else {
-          throw new Error(error.message || 'Failed to submit proposal');
+      // Try to insert into Supabase with timeout for network issues
+      const controller = new AbortController();
+      const timeoutId = setTimeout(() => controller.abort(), 10000); // 10 second timeout
+      
+      try {
+        // Insert into Supabase
+        const { error } = await supabase
+          .from('proposals')
+          .insert([proposalData]);
+  
+        clearTimeout(timeoutId);
+  
+        if (error) {
+          console.error('Supabase error:', error);
+          if (error.code === 'PGRST301') {
+            throw new Error('Permission denied. Please try again later.');
+          } else {
+            throw new Error(error.message || 'Failed to submit proposal');
+          }
         }
+  
+        // Show success state
+        setShowSuccessModal(true);
+        closeProposalModal();
+        setSelectedActivities([]);
+      } catch (insertError: Error | unknown) {
+        // Handle network errors or timeouts
+        if (insertError instanceof Error && insertError.name === 'AbortError') {
+          throw new Error('Request timed out. Please check your connection and try again.');
+        }
+        throw insertError;
       }
-
-      // Show success state
-      setShowSuccessModal(true);
-      closeProposalModal();
-      setSelectedActivities([]);
       
     } catch (error) {
       console.error('Error submitting proposal:', error);

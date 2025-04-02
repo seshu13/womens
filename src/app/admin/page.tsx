@@ -102,13 +102,6 @@ export default function AdminPage() {
     }));
   };
 
-  // Fetch activities on component mount
-  useEffect(() => {
-    if (isLoggedIn) {
-      fetchActivities();
-    }
-  }, [isLoggedIn]);
-
   const fetchActivities = useCallback(async () => {
     try {
       const { data, error } = await supabase
@@ -145,12 +138,19 @@ export default function AdminPage() {
     }
   }, [showInactive]);
 
+  // Fetch activities on component mount
+  useEffect(() => {
+    if (isLoggedIn) {
+      fetchActivities();
+    }
+  }, [isLoggedIn, fetchActivities]);
+
   // Add effect to refetch when showInactive changes
   useEffect(() => {
     if (isLoggedIn) {
       fetchActivities();
     }
-  }, [isLoggedIn, showInactive]);
+  }, [isLoggedIn, showInactive, fetchActivities]);
 
   const handleDeleteActivity = async (id: string) => {
     if (!window.confirm('Are you sure you want to delete this activity?')) return;
