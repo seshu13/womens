@@ -218,12 +218,14 @@ export default function AnniversaryProposalModal({
 
               {/* Promo Code Highlighted Box */}
               <div className="mt-6 bg-[#FFB473]/10 border border-[#FFB473]/20 rounded-xl p-4">
-                <div className="flex items-center justify-between">
-                  <div>
+                <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between">
+                  <div className="mb-2 sm:mb-0">
                     <h4 className="font-medium text-[#053257]">Anniversary Promo Code</h4>
                     <p className="text-sm text-[#053257]/70">Use this code when booking</p>
                   </div>
-                  <div className="text-xl font-bold text-[#FF4C39]">TREBOUND10</div>
+                  <div className="text-left sm:text-right">
+                    <div className="text-xl font-bold text-[#FF4C39] inline-block">TREBOUND10</div>
+                  </div>
                 </div>
               </div>
 
