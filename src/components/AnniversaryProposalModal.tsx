@@ -5,7 +5,6 @@ interface FormData {
   email: string;
   phone: string;
   company: string;
-  numberOfParticipants: string;
   message?: string;
 }
 
@@ -109,7 +108,6 @@ export default function AnniversaryProposalModal({
                 email: formData.get('email') as string,
                 phone: formData.get('phone') as string,
                 company: formData.get('company') as string,
-                numberOfParticipants: formData.get('numberOfParticipants') as string,
                 message: (formData.get('message') as string || '') + 
                          '\n[Offer: TREBOUND10 code claimed for 10th Anniversary Special]'
               };
@@ -182,26 +180,6 @@ export default function AnniversaryProposalModal({
                 </div>
 
                 <div className="md:col-span-2">
-                  <label htmlFor="numberOfParticipants" className="block text-sm font-medium text-[#053257] mb-1">
-                    Number of Participants
-                  </label>
-                  <select
-                    id="numberOfParticipants"
-                    name="numberOfParticipants"
-                    required
-                    disabled={isSubmitting}
-                    className="w-full px-4 py-2 rounded-xl border border-gray-200 focus:outline-none focus:ring-2 focus:ring-[#FF4C39]/20 focus:border-[#FF4C39] disabled:opacity-50 disabled:bg-gray-50"
-                  >
-                    <option value="">Select team size</option>
-                    <option value="5-10">5-10 participants</option>
-                    <option value="11-25">11-25 participants</option>
-                    <option value="26-50">26-50 participants</option>
-                    <option value="51-100">51-100 participants</option>
-                    <option value="100+">100+ participants</option>
-                  </select>
-                </div>
-
-                <div className="md:col-span-2">
                   <label htmlFor="message" className="block text-sm font-medium text-[#053257] mb-1">
                     Additional Notes
                   </label>
@@ -216,15 +194,42 @@ export default function AnniversaryProposalModal({
                 </div>
               </div>
 
+              {/* Claim Promo Code Checkbox */}
+              <div className="mt-6">
+                <label className="flex items-center gap-3 cursor-pointer group">
+                  <div className="relative">
+                    <input 
+                      type="checkbox" 
+                      name="claimPromo" 
+                      className="peer sr-only" 
+                      defaultChecked 
+                    />
+                    <div className="w-6 h-6 border-2 border-[#FFB473] rounded-lg peer-checked:bg-[#FFB473] peer-checked:border-[#FFB473] transition-all">
+                      <svg 
+                        className="w-5 h-5 text-white scale-0 peer-checked:scale-100 transition-transform absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2" 
+                        fill="none" 
+                        stroke="currentColor" 
+                        viewBox="0 0 24 24"
+                      >
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                      </svg>
+                    </div>
+                  </div>
+                  <span className="text-[#053257] group-hover:text-[#FF4C39] transition-colors">
+                    Yes, I want to claim my 20% anniversary discount!
+                  </span>
+                </label>
+              </div>
+
               {/* Promo Code Highlighted Box */}
-              <div className="mt-6 bg-[#FFB473]/10 border border-[#FFB473]/20 rounded-xl p-4">
+              <div className="mt-4 bg-[#FFB473]/10 border border-[#FFB473]/20 rounded-xl p-4">
                 <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between">
                   <div className="mb-2 sm:mb-0">
                     <h4 className="font-medium text-[#053257]">Anniversary Promo Code</h4>
                     <p className="text-sm text-[#053257]/70">Use this code when booking</p>
                   </div>
                   <div className="text-left sm:text-right">
-                    <div className="text-xl font-bold text-[#FF4C39] inline-block">TREBOUND10</div>
+                    <div className="text-xl font-bold text-[#FF4C39] inline-block bg-white/50 px-4 py-2 rounded-lg">TREBOUND10</div>
                   </div>
                 </div>
               </div>

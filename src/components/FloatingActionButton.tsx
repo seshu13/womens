@@ -14,7 +14,7 @@ export default function FloatingActionButton({ show, count, onClick }: FloatingA
   return (
     <button
       onClick={onClick}
-      className="fixed bottom-8 right-8 bg-primary text-white rounded-full p-4 shadow-xl hover:shadow-2xl transition-all hover:-translate-y-1 transform z-50 group"
+      className="fixed bottom-8 right-8 bg-primary text-white rounded-full p-4 shadow-xl hover:shadow-2xl transition-all hover:-translate-y-1 transform z-40 group"
     >
       <div className="flex items-center gap-3">
         <div className="relative">

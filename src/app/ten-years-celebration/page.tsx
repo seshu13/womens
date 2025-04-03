@@ -236,7 +236,7 @@ export default function TenYearsCelebration() {
 
                 {/* Anniversary Special Offer */}
                 <div className="bg-white rounded-3xl p-8 border-2 border-dashed border-[#FFB473] relative">
-                  <div className="absolute -top-5 left-1/2 transform -translate-x-1/2 bg-white px-6 py-2 rounded-full border-2 border-[#FFB473] text-[#053257] font-medium">
+                  <div className="absolute -top-5 left-1/2 transform -translate-x-1/2 bg-white px-6 py-2 rounded-full border-2 border-[#FFB473] text-[#053257] font-medium text-center w-auto min-w-[200px]">
                     Anniversary Special
                   </div>
 
@@ -251,20 +251,12 @@ export default function TenYearsCelebration() {
                     <div className="bg-[#F9F9F9] rounded-xl p-4 mb-6">
                       <p className="text-[#053257]/80">Valid until April 30, 2025</p>
                     </div>
-                    
-                    {/* Promo Code Section in Anniversary Special Box */}
-                    <div className="bg-[#FFB473]/10 rounded-xl p-4 mb-6">
-                      <h4 className="text-lg font-medium text-[#053257] mb-2">Use Exclusive Code:</h4>
-                      <div className="text-3xl font-bold text-[#053257] tracking-wider font-dm-sans bg-white/80 py-2 px-4 rounded-lg inline-block shadow-sm">
-                        TREBOUND10
-                      </div>
-                    </div>
 
                     <button
                       onClick={handleOpenModal}
                       className="w-full px-6 py-4 rounded-xl bg-[#FF4C39] text-white font-medium hover:bg-[#FF4C39]/90 transition-all shadow-lg hover:-translate-y-0.5 transform flex items-center justify-center gap-2"
                     >
-                      Claim Your Offer Now
+                      Get Your Special Discount
                       <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7l5 5m0 0l-5 5m5-5H6" />
                       </svg>

@@ -89,12 +89,14 @@ export default function TheHeader() {
           </nav>
 
           {/* CTA Button */}
-          <button
-            onClick={openProposalModal}
-            className="inline-flex items-center px-6 py-2.5 rounded-full bg-[#FF4C39] text-white text-base font-inter hover:bg-[#FF4C39]/90 transition-all shadow-lg shadow-[#FF4C39]/30 hover:shadow-[#FF4C39]/40 hover:-translate-y-0.5 transform"
-          >
-            Register Now
-          </button>
+          {pathname !== '/ten-years-celebration' && (
+            <button
+              onClick={openProposalModal}
+              className="inline-flex items-center px-6 py-2.5 rounded-full bg-[#FF4C39] text-white text-base font-inter hover:bg-[#FF4C39]/90 transition-all shadow-lg shadow-[#FF4C39]/30 hover:shadow-[#FF4C39]/40 hover:-translate-y-0.5 transform"
+            >
+              Register Now
+            </button>
+          )}
         </div>
       </div>
     </header>
