@@ -14,9 +14,9 @@ export default function TheHeader() {
   return (
     <header className="fixed top-0 left-0 right-0 bg-white/80 backdrop-blur-lg z-50 border-b border-secondary/5">
       <div className="container mx-auto px-4">
-        <div className="flex items-center justify-between h-20">
-          {/* Logo */}
-          <Link href="/" className="flex items-center">
+        <div className="flex items-center h-20 relative">
+          {/* Logo - Centered on mobile */}
+          <Link href="/" className="flex items-center absolute left-1/2 -translate-x-1/2 md:relative md:left-0 md:transform-none">
             <div className="relative w-32 h-10">
               <Image
                 src="/66f54b982ce090736e4e4d1c_Tewbound Hover.png"
@@ -29,7 +29,7 @@ export default function TheHeader() {
           </Link>
 
           {/* Navigation */}
-          <nav className="hidden md:flex items-center gap-8 font-inter">
+          <nav className="hidden md:flex items-center gap-8 font-inter ml-auto">
             <Link 
               href="/" 
               className={`relative text-base font-medium transition-all group ${

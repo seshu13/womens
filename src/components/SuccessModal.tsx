@@ -55,12 +55,12 @@ export default function SuccessModal({ show, onClose }: SuccessModalProps) {
                   as="h3"
                   className="text-2xl font-bold leading-6 text-[#053257] font-dm-sans mt-4"
                 >
-                  Thank You for Celebrating With Us!
+                  Thank You for Joining Our Celebration!
                 </Dialog.Title>
 
                 <div className="mt-4">
                   <p className="text-[#053257CC] font-inter">
-                    Your registration has been received. We&apos;ll get back to you shortly with more details about your selected activities.
+                    We&apos;ve received your request for the anniversary special offer. Our team will contact you within 24 hours to help you plan your perfect team event with the 20% discount.
                   </p>
                 </div>
 
@@ -70,7 +70,7 @@ export default function SuccessModal({ show, onClose }: SuccessModalProps) {
                     className="inline-flex justify-center rounded-xl bg-[#FF4C39] px-8 py-3 text-sm font-medium text-white hover:bg-[#FF4C39]/90 focus:outline-none focus-visible:ring-2 focus-visible:ring-[#FF4C39]/50 transition-all duration-200"
                     onClick={onClose}
                   >
-                    Got it, thanks!
+                    Looking Forward!
                   </button>
                 </div>
 
