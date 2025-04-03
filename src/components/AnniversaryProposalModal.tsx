@@ -6,6 +6,7 @@ interface FormData {
   phone: string;
   company: string;
   message?: string;
+  numberOfParticipants: string;
 }
 
 interface AnniversaryProposalModalProps {
@@ -108,6 +109,7 @@ export default function AnniversaryProposalModal({
                 email: formData.get('email') as string,
                 phone: formData.get('phone') as string,
                 company: formData.get('company') as string,
+                numberOfParticipants: '10+',
                 message: (formData.get('message') as string || '') + 
                          '\n[Offer: TREBOUND10 code claimed for 10th Anniversary Special]'
               };
