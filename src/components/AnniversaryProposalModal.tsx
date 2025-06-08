@@ -46,7 +46,7 @@ export default function AnniversaryProposalModal({
             <h2 className="text-3xl font-bold font-dm-sans mb-2">A Decade of Excellence</h2>
             <div className="space-y-2">
               <p className="text-white/95 font-inter text-lg font-medium">Celebrate Trebound&apos;s 10th Anniversary</p>
-              <p className="text-white/85 font-inter text-sm">Special 20% discount on all team-building packages until April 30, 2025</p>
+              <p className="text-white/85 font-inter text-sm">Special 20% discount on all team-building packages until June 30, 2025</p>
             </div>
           </div>
           
