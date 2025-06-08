@@ -80,7 +80,7 @@ export default function TenYearsCelebration() {
     "name": "Trebound 10th Anniversary Celebration",
     "description": "Celebrating a decade of delivering transformative corporate team experiences. Special offers on all team-building packages throughout 2025.",
     "startDate": "2025-01-01",
-    "endDate": "2025-04-30",
+    "endDate": "2025-06-30",
     "location": {
       "@type": "Place",
       "name": "Trebound Headquarters",
@@ -100,7 +100,7 @@ export default function TenYearsCelebration() {
       "priceCurrency": "INR",
       "availability": "https://schema.org/InStock",
       "validFrom": "2025-01-01",
-      "validThrough": "2025-04-30",
+      "validThrough": "2025-06-30",
       "url": "https://www.trebound.com/ten-years-celebration"
     },
     "organizer": {
@@ -249,7 +249,7 @@ export default function TenYearsCelebration() {
                     </div>
 
                     <div className="bg-[#F9F9F9] rounded-xl p-4 mb-6">
-                      <p className="text-[#053257]/80">Valid until April 30, 2025</p>
+                      <p className="text-[#053257]/80">Valid until June 30, 2025</p>
                     </div>
 
                     <button
